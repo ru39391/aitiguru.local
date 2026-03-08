@@ -8,7 +8,7 @@ import {
 } from "@/pages";
 
 import { ProtectedRoute } from "@/entities/auth";
-import routes from "./routes";
+import { routes } from "@/shared/constants";
 
 const AppRouter: FC = () => {
   return (

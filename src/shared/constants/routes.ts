@@ -1,4 +1,4 @@
-const routes = {
+export const routes = {
   public: {
     login: "/sign-in",
     signup: "/sign-up",
@@ -7,5 +7,3 @@ const routes = {
     home: "/positions",
   },
 } as const;
-
-export default routes;
