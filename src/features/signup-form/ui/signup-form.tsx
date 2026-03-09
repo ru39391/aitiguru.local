@@ -4,22 +4,32 @@ import { AuthForm } from "@/entities/auth-form";
 import { Button, TextField } from "@/shared/ui";
 import { routes } from "@/shared/constants";
 
-const SignInFormFooter: FC = () => <>Нет аккаунта? <Link to={routes.public.signup}>Создать</Link></>;
+const SignUpFormFooter: FC = () => <>Есть аккаунт? <Link to={routes.public.login}>Войти</Link></>;
 
-const SignInForm: FC = () => (
+const SignUpForm: FC = () => (
   <AuthForm
     title="Добро пожаловать!"
-    subtitle="Пожалуйста, авторизируйтесь"
-    footer={<SignInFormFooter />}
+    subtitle="Пожалуйста, зарегистрируйтесь"
+    footer={<SignUpFormFooter />}
   >
     {[
       {
+        name: "name",
+        label: "ФИО",
+      }, {
+        name: "email",
+        label: "E-mail",
+        type: "email",
+      }, {
         name: "login",
         label: "Логин",
-        type: "text",
       }, {
         name: "password",
         label: "Пароль",
+        type: "password",
+      }, {
+        name: "confirm-password",
+        label: "Повторите пароль",
         type: "password",
       }
     ].map(({ label, name, type }) => (
@@ -34,8 +44,8 @@ const SignInForm: FC = () => (
         }}
       />
     ))}
-    <Button caption="Войти" />
+    <Button caption="Создать аккаунт" />
   </AuthForm>
 );
 
-export default SignInForm;
+export default SignUpForm;

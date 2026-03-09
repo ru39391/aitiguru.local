@@ -1,0 +1,12 @@
+.logo {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--color-white), 0 12px 8px rgba(0, 0, 0, 0.03);
+  background: linear-gradient(360deg, rgba(35, 35, 35, 0) 50%, rgba(35, 35, 35, 0.06) 100%), var(--color-white);
+}

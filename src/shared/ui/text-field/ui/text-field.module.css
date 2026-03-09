@@ -1,0 +1,30 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px 0;
+}
+
+.label {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-xl);
+  font-weight: var(--fw-medium);
+}
+
+.row {
+  display: flex;
+  gap: 0 4px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+}
+
+.row_offset_y {
+  padding: 0 16px;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 14px 10px;
+  letter-spacing: -0.015em;
+}
+
