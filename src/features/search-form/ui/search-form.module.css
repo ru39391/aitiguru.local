@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  height: 48px;
+  gap: 0 8px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background-color: #F3F3F3;
+}
+
+.form__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  color: var(--color-grey-dark);
+}
+
+.form__field {
+  flex-grow: 1;
+  padding: 12px 0;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-xl);
+  color: var(--color-grey-dark);
+}
