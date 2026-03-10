@@ -2,10 +2,11 @@
   --color-basic: #232323;
   --color-light: #F9F9F9;
   --color-neutral: #F6F6F6;
-  --color-grey-dark: #6C6C6C;
-  --color-grey-light: #EBEBEB;
-  --color-border: #EDEDED;
+  --color-neutral-dark: #CACACA;
   --color-grey: #E0E0E0;
+  --color-grey-light: #EBEBEB;
+  --color-grey-dark: #6C6C6C;
+  --color-border: #EDEDED;
   --color-white: #fff;
   --color-primary: #242EDB;
   --color-secondary: #367AFF;
