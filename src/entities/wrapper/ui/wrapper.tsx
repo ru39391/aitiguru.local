@@ -8,7 +8,7 @@ const Wrapper: FC<IWrapper> = ({ aside, children, title }) => (
       <div className={styles.wrapper__title}>{title}</div>
       {Boolean(aside) && <div className={styles.wrapper__aside}>{aside}</div>}
     </div>
-    {children}
+    <div className={styles.wrapper__container}>{children}</div>
   </div>
 );
 

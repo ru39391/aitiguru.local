@@ -2,6 +2,14 @@ import type { FC } from "react";
 import type { IButton } from "../model/types";
 import styles from './button.module.css';
 
-const Button: FC<IButton> = ({ caption, type = "button" }) => <button className={styles.btn} type={type}>{caption}</button>;
+const Button: FC<IButton> = ({ caption = "", children, handleClick, style, type = "button" }) => {
+  const classNameMod = `btn_type_${style}`;
+
+  return (
+    <button className={style ? `${styles.btn} ${styles[classNameMod]}` : styles.btn} type={type} {...( handleClick && { onClick: handleClick } )}>
+      {caption || children}
+    </button>
+  )
+};
 
 export default Button;
