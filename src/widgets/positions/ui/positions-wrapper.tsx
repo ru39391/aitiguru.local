@@ -1,13 +1,18 @@
 import type { FC } from "react";
 import { CreatePositionsBtn } from "@/features/create-position-btn";
+import { PositionsCounter } from "@/features/positions-counter";
 import { PositionsList } from "@/features/positions-list";
-import { RefreshPositionsBtn } from "@/features/refresh-positions-btn";
+import { PositionsPagination } from "@/features/positions-pagination";
+import { ResetPositionsBtn } from "@/features/reset-positions-btn";
 import { Wrapper } from "@/entities/wrapper";
 
 const PositionsWrapper: FC = () => (
-  <Wrapper title="Все позиции" aside={(<><RefreshPositionsBtn /><CreatePositionsBtn /></>)}>
+  <Wrapper
+    aside={(<><ResetPositionsBtn /><CreatePositionsBtn /></>)}
+    footer={(<><PositionsCounter /><PositionsPagination /></>)}
+    title="Все позиции"
+  >
     <PositionsList />
-    тут пагинация
   </Wrapper>
 );
 

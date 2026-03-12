@@ -15,10 +15,41 @@
   box-shadow: 0 8px 8px rgba(54, 122, 255, 0.03), inset 0 -2px 0 1px rgba(0, 0, 0, 0.08);
 }
 
+.btn_type_row {
+  font-size: var(--font-size-sm);
+  letter-spacing: 0;
+  gap: 0 15px;
+  padding: 10px 20px;
+  flex-direction: row;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  background: none;
+  background-color: var(--color-primary);
+}
+
+.btn_type_icon {
+  border: 0;
+  padding: 2px 14px;
+  border-radius: 24px;
+  box-shadow: none;
+  background: none;
+  background-color: var(--color-primary);
+}
+
+.btn_type_plain {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  color: #515161;
+  box-shadow: none;
+}
+
 .btn_type_unstyled {
   padding: 0;
   border: 0;
-  background: none;
   box-shadow: none;
+  background: none;
   color: var(--color-border-dark);
 }

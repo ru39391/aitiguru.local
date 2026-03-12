@@ -4,6 +4,6 @@ export interface IButton {
   caption?: string;
   children?: ReactNode;
   handleClick?: () => void;
-  style?: "unstyled";
+  style?: "unstyled" | "icon" | "plain" | "row";
   type?: "button" | "submit";
 }

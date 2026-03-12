@@ -1,31 +1,28 @@
 import type { FC } from "react";
+import { Button } from "@/shared/ui";
+import { DotsIcon, PlusIcon } from "@/shared/icons";
 import { PositionItem } from "@/entities/position-item";
-import { ShowMoreBtn } from "@/entities/show-more-btn";
 import styles from './positions-list.module.css';
 
 const PositionsList: FC = () => {
+  const captions = {
+    name: "Наименование",
+    vendor: "Вендор",
+    article: "Артикул",
+    rating: "Оценка",
+    price: "Цена, ₽",
+  };
+
   const setClassName = (key: string): string => `${styles.positions__col} ${styles[`positions__col_type_${key}`]}`;
   const setRowClass = (keys: string[]): Record<string, string> => keys.reduce((acc, key) => ({ ...acc, [key]: setClassName(key) }), {});
 
   return (
     <div className={styles.positions}>
       <div className={`${styles.positions__row} ${styles.positions__row_type_caption}`}>
-        {[{
-          name: "name",
-          caption: "Наименование"
-        }, {
-          name: "vendor",
-          caption: "Вендор"
-        }, {
-          name: "article",
-          caption: "Артикул"
-        }, {
-          name: "rating",
-          caption: "Оценка"
-        }, {
-          name: "price",
-          caption: "Цена, ₽"
-        }].map(({ name, caption }) => (
+        {Object.entries(captions).reduce(
+          (acc, [key, value]) => [...acc, { name: key, caption: value }],
+          [] as Record<string,string>[]
+        ).map(({ name, caption }) => (
           <div key={name} className={setClassName(name)}><span className={styles.positions__caption}>{caption}</span></div>
         ))}
       </div>
@@ -40,9 +37,19 @@ const PositionsList: FC = () => {
         price: 48652,
       })).map(({ id, ...props }) => (
         <div key={id.toString()} className={styles.positions__row}>
-          <PositionItem classNames={setRowClass(Object.keys(props))} id={id.toString()} {...props}>
+          <PositionItem
+            id={id.toString()}
+            classNames={setRowClass(Object.keys(props))}
+            captions={captions}
+            {...props}
+          >
             <div className={styles.positions__col_type_btns}>
-              <ShowMoreBtn handleClick={() => console.log("show context menu")} />
+              <Button handleClick={() => console.log(`edit ${props.name}, id = ${id.toString()}`)} style="icon">
+                <PlusIcon />
+              </Button>
+              <Button handleClick={() => console.log(`show context menu for ${props.name}, id = ${id.toString()}`)} style="unstyled">
+                <DotsIcon />
+              </Button>
             </div>
           </PositionItem>
         </div>

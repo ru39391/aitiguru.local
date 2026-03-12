@@ -1,29 +1,44 @@
+.positions {
+  display: flex;
+  flex-direction: column;
+}
+
 .positions__row {
-  gap: 8px;
-  align-items: center;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px 0;
   border-bottom: 1px solid #E2E2E2;
+}
+
+.positions__row_type_caption {
+  display: none;
 }
 
 @media (--md-min-value) {
   .positions__row {
     display: grid;
+    gap: 8px;
+    align-items: center;
     grid-template-columns: repeat(8,1fr);
     grid-template-areas:
       "name name vendor article rating price btns btns";
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .positions__row_type_caption {
+    display: grid;
+    padding-top: 22px;
+    padding-bottom: 22px;
   }
 }
 
-.positions__row_type_caption {
-  padding-top: 22px;
-  padding-bottom: 22px;
-}
-
-.positions__col {
-  text-align: center;
+@media (--md-min-value) {
+  .positions__col {
+    text-align: center;
+  }
 }
 
 .positions__col_type_name {
@@ -55,9 +70,15 @@
 .positions__col_type_btns {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0 32px;
   grid-area: btns;
+}
+
+@media (--md-min-value) {
+  .positions__col_type_btns {
+    justify-content: center;
+  }
 }
 
 .positions__caption {

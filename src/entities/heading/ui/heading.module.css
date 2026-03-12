@@ -1,7 +1,6 @@
 .header {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 8px;
   padding: 26px 16px;
   border-radius: 10px;
@@ -11,6 +10,7 @@
 @media (--sm-min-value) {
   .header {
     display: grid;
+    align-items: center;
     grid-template-columns: repeat(4,1fr);
     grid-template-areas:
       "caption aside aside .";
@@ -20,11 +20,18 @@
 }
 
 .header__caption {
+  grid-area: caption;
+  text-align: center;
   font-size: var(--font-size-xl);
   line-height: var(--line-height-xxl);
   font-weight: var(--fw-black);
-  grid-area: caption;
   color: var(--color-dark);
+}
+
+@media (--sm-min-value) {
+  .header__caption {
+    text-align: left;
+  }
 }
 
 .header__aside {

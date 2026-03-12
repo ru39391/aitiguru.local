@@ -7,7 +7,7 @@ const Button: FC<IButton> = ({ caption = "", children, handleClick, style, type 
 
   return (
     <button className={style ? `${styles.btn} ${styles[classNameMod]}` : styles.btn} type={type} {...( handleClick && { onClick: handleClick } )}>
-      {caption || children}
+      {children || ""}{caption}
     </button>
   )
 };

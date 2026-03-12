@@ -12,7 +12,7 @@ const PositionMeta: FC<{
   const [isChecked, setChecked] = useState<boolean>(false);
 
   return (
-    <div className={styles.meta}>
+    <div className={isChecked ? `${styles.meta} ${styles.meta_checked}` : styles.meta}>
       <input id={id} className={styles.meta__toggler} type="checkbox" onChange={() => setChecked(!isChecked)} checked={isChecked} />
       <label htmlFor={id} className={isChecked ? `${styles.meta__label} ${styles.meta__label_checked}` : styles.meta__label}></label>
       <div className={styles.meta__row}>
@@ -28,12 +28,14 @@ const PositionMeta: FC<{
 
 const PositionPrice: FC<{ price: IPositionItem["price"]; }> = ({ price }) => <>{formatCurrency(price)}<span className={styles.meta__price}>, 00</span></>;
 
-const PositionItem: FC<IPositionItem> = ({ category, children, classNames, id, img, ...props }) => (
+const PositionItem: FC<IPositionItem> = ({ captions, category, children, classNames, id, img, ...props }) => (
   <>
     {Object.entries(props).map(([key, value]) => (
       key === "name"
         ? <PositionMeta key={key} {...{ category, img, name: props.name, id }} />
-        : <div key={key} className={classNames[key]}>{key === "price" ? (<PositionPrice price={value} />) : value}{key === "rating" && "/5"}</div>
+        : (<div key={key} className={classNames[key]}>
+            <span className={styles.caption}>{captions[key]}: </span>{key === "price" ? (<PositionPrice price={value} />) : value}{key === "rating" && "/5"}
+          </div>)
     ))}
     {children}
   </>

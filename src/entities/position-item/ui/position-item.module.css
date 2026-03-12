@@ -5,6 +5,21 @@
   gap: 18px;
 }
 
+.meta:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  display: none;
+  background-color: var(--color-border-primary);
+}
+
+.meta_checked:before {
+  display: block;
+}
+
 .meta__toggler {
   position: absolute;
   width: 0;
@@ -24,7 +39,7 @@
 }
 
 .meta__label_checked {
-  background-color: #3C538E;
+  background-color: var(--color-border-primary);
 }
 
 .meta__row {
@@ -69,4 +84,15 @@
 
 .meta__price {
   color: var(--color-border-dark);
+}
+
+.caption {
+  font-weight: var(--fw-normal);
+  color: var(--color-border-dark);
+}
+
+@media (--md-min-value) {
+  .caption {
+    display: none;
+  }
 }

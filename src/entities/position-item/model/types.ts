@@ -5,6 +5,7 @@ export interface IPositionItem {
   id: string;
   img: TPositionData["img"];
   name: TPositionData["name"];
+  captions: Record<string, string>;
   category: TPositionData["category"];
   children: ReactNode;
   classNames: Record<string, string>;
