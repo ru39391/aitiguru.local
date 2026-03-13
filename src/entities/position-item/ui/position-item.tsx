@@ -26,7 +26,11 @@ const PositionMeta: FC<{
   )
 };
 
-const PositionPrice: FC<{ price: IPositionItem["price"]; }> = ({ price }) => <>{formatCurrency(price)}<span className={styles.meta__price}>, 00</span></>;
+const PositionPrice: FC<{ price: IPositionItem["price"]; }> = ({ price }) => {
+  const [int, dec] = formatCurrency(price).split(",");
+
+  return <>{int}<span className={styles.meta__price}>, {dec || "00"}</span></>
+};
 
 const PositionItem: FC<IPositionItem> = ({ captions, category, children, classNames, id, img, ...props }) => (
   <>
@@ -34,7 +38,8 @@ const PositionItem: FC<IPositionItem> = ({ captions, category, children, classNa
       key === "name"
         ? <PositionMeta key={key} {...{ category, img, name: props.name, id }} />
         : (Boolean(captions[key]) && <div key={key} className={classNames[key]}>
-            <span className={styles.caption}>{captions[key]}: </span>{key === "price" ? (<PositionPrice price={value} />) : value}{key === "rating" && "/5"}
+            <span className={styles.caption}>{captions[key]}: </span>
+            {key === "price" ? (<PositionPrice price={value} />) : value}{key === "rating" && "/5"}
           </div>)
     ))}
     {children}

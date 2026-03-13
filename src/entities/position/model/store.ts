@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { routes } from "@/shared/constants";
-import { apiHandler } from "@/shared/api";
-import type { TPositionData } from "@/shared/types";
+import { positionApi } from "../lib/position-api";
 import type { TPositionState, TPositionStore } from "./types";
 
 const initialState: TPositionState = {
@@ -16,11 +14,11 @@ export const usePositionStore = create<TPositionStore>()(
     (set, get) => ({
       ...initialState,
 
-      fetchPositions: async () => {
+      fetchPositions: async (payload = null) => {
         set({ isLoading: true });
 
         try {
-          const { data: { data, ...pagination } } = await apiHandler.fetch<TPositionData[]>(routes.api.positions);
+          const { data, pagination } = await positionApi.fetchItems(payload);
 
           set({
             data,

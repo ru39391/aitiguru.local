@@ -1,6 +1,5 @@
 import type { FC } from "react";
 import type { IItemsCounter } from "../model/types";
-
 import styles from './items-counter.module.css';
 
 const ItemsCounter: FC<IItemsCounter> = ({ page, perPage, totalCount }) => {
