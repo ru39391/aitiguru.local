@@ -6,4 +6,7 @@ export const routes = {
   protected: {
     home: "/positions",
   },
+  api: {
+    positions: "/positions",
+  },
 } as const;

@@ -33,7 +33,7 @@ const PositionItem: FC<IPositionItem> = ({ captions, category, children, classNa
     {Object.entries(props).map(([key, value]) => (
       key === "name"
         ? <PositionMeta key={key} {...{ category, img, name: props.name, id }} />
-        : (<div key={key} className={classNames[key]}>
+        : (Boolean(captions[key]) && <div key={key} className={classNames[key]}>
             <span className={styles.caption}>{captions[key]}: </span>{key === "price" ? (<PositionPrice price={value} />) : value}{key === "rating" && "/5"}
           </div>)
     ))}

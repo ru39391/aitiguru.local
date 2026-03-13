@@ -2,9 +2,16 @@ import type { FC } from "react";
 import { Button } from "@/shared/ui";
 import { DotsIcon, PlusIcon } from "@/shared/icons";
 import { PositionItem } from "@/entities/position-item";
+import { usePositionStore } from "@/entities/position";
 import styles from './positions-list.module.css';
 
 const PositionsList: FC = () => {
+  const { data: positions, isLoading } = usePositionStore();
+
+  if(!isLoading && !positions.length) {
+    return <div className={styles.positions}>Нет товаров в наличии</div>
+  }
+
   const captions = {
     name: "Наименование",
     vendor: "Вендор",
@@ -26,16 +33,7 @@ const PositionsList: FC = () => {
           <div key={name} className={setClassName(name)}><span className={styles.positions__caption}>{caption}</span></div>
         ))}
       </div>
-      {[...Array(5)].map((_, index) => ({
-        id: index,
-        img: "https://basket-14.wbbasket.ru/vol2091/part209126/209126820/images/big/1.webp",
-        name: "USB Флэшкарта 16GB",
-        category: "Аксессуары",
-        vendor: "Samsung",
-        article: "RCH45Q1A",
-        rating: "4.3",
-        price: 48652,
-      })).map(({ id, ...props }) => (
+      {positions.map(({ id, ...props }) => (
         <div key={id.toString()} className={styles.positions__row}>
           <PositionItem
             id={id.toString()}

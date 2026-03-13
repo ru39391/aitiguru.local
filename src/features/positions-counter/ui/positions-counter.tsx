@@ -1,6 +1,11 @@
 import type { FC } from "react";
 import { ItemsCounter } from "@/entities/items-counter";
+import { usePositionStore } from "@/entities/position";
 
-const PositionsCounter: FC = () => <ItemsCounter {...{ first: 1, last: 20, length: 120 }} />;
+const PositionsCounter: FC = () => {
+  const { pagination } = usePositionStore();
+
+  return pagination ? <ItemsCounter {...pagination} /> : "";
+};
 
 export default PositionsCounter;
