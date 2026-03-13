@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { positionApi } from "../lib/position-api";
-import type { TPositionState, TPositionStore } from "./types";
+import type { TPaginationPayload, TPositionState, TPositionStore } from "./types";
 
 const initialState: TPositionState = {
   data: [],
@@ -14,7 +14,7 @@ export const usePositionStore = create<TPositionStore>()(
     (set, get) => ({
       ...initialState,
 
-      fetchPositions: async (payload = null) => {
+      fetchPositions: async (payload: TPaginationPayload = null) => {
         set({ isLoading: true });
 
         try {
@@ -29,7 +29,7 @@ export const usePositionStore = create<TPositionStore>()(
           set({ isLoading: false });
         }
       },
-
+      /*
       createPosition: async (payload) => {
       },
 
@@ -38,6 +38,7 @@ export const usePositionStore = create<TPositionStore>()(
 
       removePosition: async (payload) => {
       }
+      */
     }),
     { name: "PositionStore" },
   ),

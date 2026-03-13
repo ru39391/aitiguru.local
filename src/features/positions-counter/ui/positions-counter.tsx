@@ -3,9 +3,9 @@ import { ItemsCounter } from "@/entities/items-counter";
 import { usePositionStore } from "@/entities/position";
 
 const PositionsCounter: FC = () => {
-  const { pagination } = usePositionStore();
+  const { isLoading, pagination } = usePositionStore();
 
-  return pagination ? <ItemsCounter {...pagination} /> : "";
+  return pagination ? <ItemsCounter {...pagination} isHidden={isLoading} /> : "";
 };
 
 export default PositionsCounter;

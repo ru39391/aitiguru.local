@@ -3,7 +3,11 @@ import { ArrowLeft, ArrowRight } from "@/shared/icons";
 import type { IPagination } from "../model/types";
 import styles from './pagination.module.css';
 
-const Pagination: FC<IPagination> = ({ handleClick, page, perPage, totalPages }) => {
+const Pagination: FC<IPagination> = ({ handleClick, isHidden, page, perPage, totalPages }) => {
+  if(isHidden) {
+    return "";
+  }
+
   return (
     totalPages > 1
       ? <div className={styles.pagination}>

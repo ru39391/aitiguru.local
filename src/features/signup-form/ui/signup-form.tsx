@@ -14,15 +14,12 @@ const SignUpForm: FC = () => (
   >
     {[
       {
-        name: "name",
+        name: "fullname",
         label: "ФИО",
       }, {
         name: "email",
         label: "E-mail",
         type: "email",
-      }, {
-        name: "login",
-        label: "Логин",
       }, {
         name: "password",
         label: "Пароль",
