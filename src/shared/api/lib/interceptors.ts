@@ -1,5 +1,16 @@
 import { RESPONSE_DATA, type TResponseData } from "../model";
 
+const fetchResponseError = <T>({ res, data }: Record<"res" | "data", TResponseData<T>>) => {
+  const message = data?.message as string || res.message;
+
+  console.log(data?.debug);
+  return {
+    ...res,
+    data: [message] as T,
+    message
+  };
+}
+
 export const requestInterceptor = (config: RequestInit): RequestInit => {
   const token = null;
 
@@ -20,24 +31,18 @@ export const responseInterceptor = async <T>(
     data: RESPONSE_DATA.data as T,
   };
 
-  const result = await response.json();
+  const { success, data }: { success: TResponseData<T>["success"], data: TResponseData<T> } = await response.json();
 
-  if (!response.ok) {
-    const { error } = result;
-    const message = error?.message as string || res.message;
-    res = {
-      ...res,
-      data: error.errors ? [...Object.values(error.errors as Record<string, string[]>).map(item => item[0]), message] as T : [message] as T,
-      message
-    };
+  if (!response.ok || !success) {
+    const error = fetchResponseError({ res, data });
 
-    return new Promise((reject) => reject(res));
+    return new Promise((reject) => reject(error));
   }
 
   res = {
-    data: result.data !== undefined ? result.data : result,
-    success: true,
-    message: "",
+    data: data.data !== undefined ? data.data : data as T,
+    success,
+    message: data.message?.toString(),
   };
 
   return new Promise((resolve) => resolve(res));

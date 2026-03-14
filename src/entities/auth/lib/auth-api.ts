@@ -1,10 +1,15 @@
-/*
 import { apiHandler } from "@/shared/api";
 import { routes } from "@/shared/constants";
-import type { TPositionApi } from "../model/types";
-import type { TPositionData } from "@/shared/types";
+import type { TAuthApi } from "../model/types";
 
-export const positionApi: TPositionApi = {
+export const authApi: TAuthApi = {
+  refreshToken: async () => {
+    const data = await apiHandler.create<null>(routes.api.refresh);
+
+    return { user: null, isAuth: false };
+  },
+
+  /*
   fetchItems: async (payload = null) => {
     const url = `${routes.api.positions}${payload
       ? Object.entries(payload).reduce(
@@ -21,5 +26,5 @@ export const positionApi: TPositionApi = {
 
     return { data, pagination };
   }
-}
 */
+}

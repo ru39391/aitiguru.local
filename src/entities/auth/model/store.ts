@@ -5,6 +5,7 @@ import type { TAuthState, TAuthStore } from "./types";
 
 const initialState: TAuthState = {
   user: null,
+  isAuth: false,
   isLoading: false,
 };
 
@@ -12,6 +13,22 @@ export const useAuthStore = create<TAuthStore>()(
   devtools(
     (set, get) => ({
       ...initialState,
+
+      init: async () => {
+        set({ isLoading: true });
+
+        try {
+          const { user, isAuth } = await authApi.refreshToken();
+
+          set({
+            user,
+            isAuth,
+            isLoading: false,
+          });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
 
       register: async (payload) => {
         set({ isLoading: true });
