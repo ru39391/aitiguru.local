@@ -2,13 +2,25 @@ import type { FC } from "react";
 import type { ITextField } from "../model/types";
 import styles from './text-field.module.css';
 
-const TextFieldInput: FC<{ name: ITextField["name"]; type: ITextField["type"]; isRequired: ITextField["isRequired"]; }> = ({ name, type, isRequired }) => (
-  <input id={name} className={`${styles.field__input} ${styles.field__label}`} type={type || "text"} {...(isRequired && { required: isRequired })} />
+const TextFieldInput: FC<{
+  name: ITextField["name"];
+  type: ITextField["type"];
+  defaultValue: ITextField["defaultValue"];
+  isRequired: ITextField["isRequired"];
+}> = ({ defaultValue, name, type, isRequired }) => (
+  <input
+    id={name}
+    name={name}
+    className={`${styles.field__input} ${styles.field__label}`}
+    type={type || "text"}
+    {...(defaultValue && { defaultValue })}
+    {...(isRequired && { required: isRequired })}
+  />
 );
 
-const TextField: FC<ITextField> = ({ children, icon, isRequired, label, name, type }) => {
+const TextField: FC<ITextField> = ({ children, defaultValue, icon, isRequired, label, name, type }) => {
   const rowClassName = icon ? `${styles.field__row} ${styles.field__row_offset_y}` : styles.field__row;
-  const input = (<TextFieldInput {...{ name, type, isRequired }} />);
+  const input = (<TextFieldInput {...{ defaultValue, name, type, isRequired }} />);
 
   return (
     <div className={styles.field}>

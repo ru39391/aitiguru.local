@@ -3,7 +3,7 @@ import { RESPONSE_DATA, type TResponseData } from "../model";
 const fetchResponseError = <T>({ res, data }: Record<"res" | "data", TResponseData<T>>) => {
   const message = data?.message as string || res.message;
 
-  console.log(data?.debug);
+  console.log('debug: ', data?.debug);
   return {
     ...res,
     data: [message] as T,

@@ -5,6 +5,7 @@ export interface ITextField {
   icon?: ReactNode;
   isRequired?: boolean;
   label?: string;
+  defaultValue?: string;
   name: string;
   type: "text" | "email" | "password";
 }

@@ -1,14 +1,8 @@
 import { apiClient, requestInterceptor, responseInterceptor } from "../lib";
 import { RESPONSE_DATA, type TResponseData } from "../model";
 
-const handleResponseError = ({
-  data,
-  message,
-}: {
-  data: string[];
-  message: string;
-}) => {
-  console.log('handleResponseError: ', { data, message });
+const handleResponseError = (message: string) => {
+  console.log('handleResponseError: ', message);
 };
 
 const handleApiClient = async <P, R>(
@@ -25,18 +19,21 @@ const handleApiClient = async <P, R>(
     ...(payload && { body: JSON.stringify(payload) }),
   });
 
-  const response = await apiClient(params.url, config);
+  try {
+    const response = await apiClient(params.url, config);
 
-  const { data, success, message }: TResponseData<R> =
-    await responseInterceptor(response);
+    const { data, success, message }: TResponseData<R> =
+      await responseInterceptor(response);
 
-  if (success !== undefined && !success) {
-    handleResponseError({ data: data as string[], message: String(message) });
-    throw new Error(message || res.message);
+    if (success !== undefined && !success) {
+      throw new Error(message || res.message);
+    }
+
+    res = { data, success, message };
+    console.log('handleApiClient: ', { data, success, message });
+  } catch (error: { message?: string }) {
+    handleResponseError(error.message || RESPONSE_DATA.message);
   }
-
-  res = { data, success, message };
-  console.log('handleApiClient: ', { data, success, message });
 
   return res;
 };

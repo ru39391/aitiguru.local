@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC } from "react";
 import { Layout, Logo } from "@/shared/ui";
 import { type IAuthForm } from "../model/types";
 import styles from './auth-form.module.css';
