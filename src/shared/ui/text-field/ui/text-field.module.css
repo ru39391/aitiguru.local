@@ -17,6 +17,11 @@
   background-color: var(--color-white);
 }
 
+.field_type_error .field__row {
+  position: relative;
+  border-color: var(--color-danger);
+}
+
 .field__row_offset_y {
   padding: 0 16px;
 }
@@ -34,5 +39,39 @@
   flex-grow: 1;
   padding: 14px 10px;
   letter-spacing: -0.015em;
+}
+
+.field_type_error .field__input {
+  color: var(--color-danger);
+}
+
+.field__error {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  padding: 2px;
+  font-size: 12px;
+  color: var(--color-danger);
+  background-color: var(--color-white);
+  transform: translateY(-50%);
+  animation: show .5s;
+  transition: all .3s ease;
+}
+
+.field_type_error .field__error {
+  display: block;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 

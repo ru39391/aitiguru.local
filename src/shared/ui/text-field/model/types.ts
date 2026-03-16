@@ -1,11 +1,18 @@
-import type { ReactNode } from "react";
+import type { ChangeEvent, FocusEvent, ReactNode } from "react";
 
-export interface ITextField {
-  children?: ReactNode;
-  icon?: ReactNode;
-  isRequired?: boolean;
-  label?: string;
+export interface ITextFieldInput {
   defaultValue?: string;
+  handleBlur?: (event: FocusEvent<HTMLInputElement>) => void;
+  handleChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFocus?: (event: FocusEvent<HTMLInputElement>) => void;
+  isRequired?: boolean;
   name: string;
   type: "text" | "email" | "password";
+}
+
+export interface ITextField extends ITextFieldInput {
+  children?: ReactNode;
+  errorValue: string;
+  icon?: ReactNode;
+  label?: string;
 }
