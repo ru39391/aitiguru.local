@@ -36,8 +36,6 @@
 
 .checkbox__toggler svg {
   display: none;
-  max-width: 100%;
-  height: auto;
 }
 
 .checkbox__item:checked + .checkbox__caption .checkbox__toggler {

@@ -70,6 +70,25 @@ export const useAuthStore = create<TAuthStore>()(
 
         return get().isAuth;
       },
+
+      logout: async () => {
+        set({ isLoading: true });
+
+        try {/*
+          const { user, isAuth } = await authApi.removeToken();
+
+          set({
+            user: null,
+            isAuth: false,
+            isLoading: false,
+          });
+          */
+        } finally {
+          set({ isLoading: false });
+        }
+
+        return get().isAuth;
+      },
     }),
     { name: "AuthStore" },
   ),

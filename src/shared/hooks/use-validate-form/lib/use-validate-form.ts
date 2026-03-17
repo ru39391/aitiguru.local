@@ -4,22 +4,7 @@ import {
   PWD_VALUE_LENGTH,
   TEXT_VALUE_LENGTH
 } from "@/shared/constants";
-
-type TInputErrors = Partial<Record<string, string>>;
-
-type TPwdData = Partial<Record<string, string>>;
-
-type TValidateForm = Record<"validateEmailField" |
-  "validatePlainField" |
-  "validatePwdField" |
-  "validateConfirmPwdField" |
-  "unsetInvalidData", (event: Event) => void> & {
-  inputErrors: TInputErrors;
-  isBtnDisabled: boolean;
-  pwdData: TPwdData;
-  resetFieldValue: (input: HTMLInputElement | null) => void;
-  togglePwdField: (input: HTMLInputElement | null) => void;
-};
+import type { TInputErrors, TPwdData, TValidateForm } from "../model/types";
 
 export const useValidateForm = (): TValidateForm => {
   const [inputErrors, setInputErrors] = useState<TInputErrors>({});

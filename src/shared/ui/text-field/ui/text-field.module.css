@@ -35,12 +35,6 @@
   color: var(--color-neutral-dark);
 }
 
-.field__icon svg {
-  max-width: 24px;
-  width: 100%;
-  height: auto;
-}
-
 .field__input {
   flex-grow: 1;
   padding: 14px 10px;
@@ -57,7 +51,7 @@
   top: 0;
   right: 10px;
   padding: 2px;
-  font-size: 12px;
+  font-size: var(--font-size-xs);
   color: var(--color-danger);
   background-color: var(--color-white);
   transform: translateY(-50%);

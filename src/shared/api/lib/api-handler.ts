@@ -1,9 +1,8 @@
 import { apiClient, requestInterceptor, responseInterceptor } from "../lib";
 import { RESPONSE_DATA, type TResponseData } from "../model";
+import { useNotificationStore } from "@/shared/store/notification";
 
-const handleResponseError = (message: string) => {
-  console.log('handleResponseError: ', message);
-};
+const notificationState = useNotificationStore.getState();
 
 const handleApiClient = async <P, R>(
   params: { method?: "GET" | "POST" | "PUT" | "DELETE"; url: string },
@@ -30,9 +29,14 @@ const handleApiClient = async <P, R>(
     }
 
     res = { data, success, message };
-    console.log('handleApiClient: ', { data, success, message });
-  } catch (error: { message?: string }) {
-    handleResponseError(error.message || RESPONSE_DATA.message);
+    console.log('handleApiClient, debug: ', { data, success, message });
+  } catch (error) {
+    const errorData = error as { message?: string };
+
+    notificationState.add({
+      title: errorData.message || RESPONSE_DATA.message,
+      type: "error"
+    });
   }
 
   return res;

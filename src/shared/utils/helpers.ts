@@ -4,3 +4,5 @@ export const formatCurrency = (v: number | string | null | undefined) => {
   if (!Number.isFinite(num)) return String(v);
   return new Intl.NumberFormat("ru-RU").format(num);// + " ₽";
 };
+
+export const setStrId = (): string => Math.random().toString(36).substring(2, 9);

@@ -5,3 +5,8 @@ body {
   color: var(--color-basic);
   background-color: var(--color-neutral);
 }
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
