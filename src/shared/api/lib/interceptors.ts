@@ -1,4 +1,5 @@
 import { RESPONSE_DATA, type TResponseData } from "../model";
+import { tokenHandler } from "./token-handler";
 
 const fetchResponseError = <T>({ res, data }: Record<"res" | "data", TResponseData<T>>) => {
   const message = data?.message as string || res.message;
@@ -12,13 +13,13 @@ const fetchResponseError = <T>({ res, data }: Record<"res" | "data", TResponseDa
 }
 
 export const requestInterceptor = (config: RequestInit): RequestInit => {
-  const token = null;
+  const token = tokenHandler.getValue();
 
   return {
     ...config,
     headers: {
       ...config.headers,
-      //...(token && { Authorization: `Bearer ${token}` }),
+      ...(token && { Authorization: `Bearer ${token}` }),
     },
   };
 };

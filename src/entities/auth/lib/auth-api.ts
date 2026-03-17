@@ -1,20 +1,11 @@
 import { apiHandler } from "@/shared/api";
 import { routes } from "@/shared/constants";
-import type { TResponseData } from "@/shared/api";
+import { tokenHandler, type TResponseData } from "@/shared/api";
 import type { TUserData } from "@/shared/types";
 import type { TAuthApi, TSignUpPayload } from "../model/types";
 
 export const authApi: TAuthApi = {
-  refreshToken: async () => {
-    const data = await apiHandler.create<null, {}>(routes.api.refresh);
-
-    console.log('refreshToken: ', data);
-    return { user: null, isAuth: false };
-  },
-
-  signUp: async (payload: TSignUpPayload) => {
-    const { data, success } = await apiHandler.create<TSignUpPayload, TResponseData<TUserData>>(routes.api.signup, payload);
-
+  handleUserData: async ({ data, success }: TResponseData<TUserData>) => {
     if(!success) {
       return {
         isAuth: success,
@@ -22,11 +13,23 @@ export const authApi: TAuthApi = {
       };
     }
 
-    const { id, email, fullname, token } = data;
+    const { id, email, fullname } = data;
+    const { token } = await tokenHandler.setValue(data.token);
+    const isAuth = Boolean(token);
 
     return {
-      isAuth: Boolean(token),
-      user: { id, email, fullname }
+      isAuth,
+      user: isAuth ? { id, email, fullname } : null
     };
+  },
+  refreshToken: async function () {
+    const { data, success } = await apiHandler.create<null, TResponseData<TUserData>>(routes.api.refresh);
+
+    return this.handleUserData({ data, success });
+  },
+  signUp: async function (payload: TSignUpPayload) {
+    const { data, success } = await apiHandler.create<TSignUpPayload, TResponseData<TUserData>>(routes.api.signup, payload);
+
+    return this.handleUserData({ data, success });
   }
 }

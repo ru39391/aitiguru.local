@@ -1,6 +1,7 @@
 import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import { useAuthStore, type TSignUpPayload } from "@/entities/auth";
+import { EXP_DEFAULT_VALUE } from "@/shared/constants";
 import { routes } from "@/shared/constants";
 import type { TFormHandler, TFormState } from "@/shared/types";
 
@@ -12,9 +13,9 @@ export const useSignUp = (): TFormHandler<TSignUpPayload> => {
     _: unknown,
     formData: FormData
   ): Promise<TFormState<TSignUpPayload>> => {
-    const values = Object.fromEntries(formData) as TSignUpPayload;
+    const { term, ...values } = Object.fromEntries(formData) as TSignUpPayload;
 
-    const res = await register(values);
+    const res = await register({ ...values, term: term ? EXP_DEFAULT_VALUE : 0 });
 
     if (res) {
       navigate(routes.protected.home, { replace: true });

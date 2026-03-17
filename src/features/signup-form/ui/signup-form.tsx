@@ -1,7 +1,7 @@
 import { type FC } from "react";
 import { Link } from "react-router";
 import { AuthForm } from "@/entities/auth-form";
-import { Button, TextField } from "@/shared/ui";
+import { Button, Checkbox, TextField } from "@/shared/ui";
 import { routes } from "@/shared/constants";
 import { useValidateForm } from "@/shared/hooks";
 import { useSignUp } from "../hooks/use-signup";
@@ -57,7 +57,14 @@ const SignUpForm: FC = () => {
           handleBlur: validatePwdField as ITextFieldInput["handleBlur"],
           handleChange: validateConfirmPwdField as ITextFieldInput["handleChange"]
         }
-      ].map(({ defaultValue, handleBlur, handleChange, label, name, type }) => (
+      ].map(({
+        defaultValue,
+        handleBlur,
+        handleChange,
+        label,
+        name,
+        type
+      }) => (
         <TextField
           key={name}
           isRequired
@@ -73,6 +80,10 @@ const SignUpForm: FC = () => {
           }}
         />
       ))}
+      <Checkbox
+        caption="Запомнить данные"
+        name="term"
+      />
       <Button
         caption="Создать аккаунт"
         isDisabled={isPending || isBtnDisabled}

@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { FORM_ERRORS } from "@/shared/constants";
+import {
+  FORM_ERRORS,
+  PWD_VALUE_LENGTH,
+  TEXT_VALUE_LENGTH
+} from "@/shared/constants";
 
 type TInputErrors = Partial<Record<string, string>>;
 
@@ -33,7 +37,7 @@ export const useValidateForm = (): TValidateForm => {
 
     setInputErrors({
       ...inputErrors,
-      ...(value.length < 3 && { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} 3 символов` })
+      ...(value.length < TEXT_VALUE_LENGTH && { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} ${TEXT_VALUE_LENGTH} символов` })
     });
   }
 
@@ -51,13 +55,17 @@ export const useValidateForm = (): TValidateForm => {
   const validatePwdField = (event: Event) => {
     const { name, value } = event.target as HTMLInputElement;
     const key = name === "password" ? "confirm_password" : "password";
-    const isPwdExist = pwdData[name] && pwdData[name].length >= 8;
-    const isConfPwdExist = pwdData[key] && pwdData[key].length >= 8;
+    const isPwdExist = pwdData[name] && pwdData[name].length >= PWD_VALUE_LENGTH;
+    const isConfPwdExist = pwdData[key] && pwdData[key].length >= PWD_VALUE_LENGTH;
     const errorMsg = isPwdExist && isConfPwdExist && pwdData[name] !== pwdData[key] ? FORM_ERRORS.pwd : "";
 
     setInputErrors({
       ...inputErrors,
-      ...(value.length < 8 ? { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} 8 символов` } : { [name]: errorMsg, [key]: errorMsg })
+      ...(
+        value.length < PWD_VALUE_LENGTH
+          ? { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} ${PWD_VALUE_LENGTH} символов` }
+          : { [name]: errorMsg, [key]: errorMsg }
+      )
     });
   }
 

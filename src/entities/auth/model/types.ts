@@ -2,9 +2,12 @@ import type { TUserData } from "@/shared/types";
 
 export type TSignUpPayload = Record<"password", string> & Pick<"email" | "fullname", TUserData>;
 
-export type TAuthState = {
+export type TAuthData = {
   user: TUserData | null;
   isAuth: boolean;
+}
+
+export type TAuthState = TAuthData & {
   isLoading: boolean;
 }
 
@@ -14,6 +17,7 @@ export type TAuthStore = TAuthState & {
 }
 
 export type TAuthApi = {
-  refreshToken: () => Promise<Omit<TAuthState, "isLoading">>;
-  signUp: (data: TSignUpPayload) => Promise<Omit<TAuthState, "isLoading">>;
+  handleUserData: (data: TResponseData<TUserData>) => Promise<TAuthData>;
+  refreshToken: () => Promise<TAuthData>;
+  signUp: (data: TSignUpPayload) => Promise<TAuthData>;
 }

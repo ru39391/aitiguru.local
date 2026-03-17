@@ -2,6 +2,7 @@ export { default as AddIcon } from "./ui/add-icon";
 export { default as ArrowLeft } from "./ui/arrow-left";
 export { default as ArrowRight } from "./ui/arrow-right";
 export { default as CloseIcon } from "./ui/close-icon";
+export { default as CheckedIcon } from "./ui/checked-icon";
 export { default as DotsIcon } from "./ui/dots-icon";
 export { default as EyeIcon } from "./ui/eye-icon";
 export { default as LockIcon } from "./ui/lock-icon";

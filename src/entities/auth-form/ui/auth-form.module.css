@@ -57,6 +57,7 @@
 
 .form__footer a {
   color: var(--color-primary);
+  font-weight: var(--fw-semibold);
   text-decoration: underline;
 }
 
