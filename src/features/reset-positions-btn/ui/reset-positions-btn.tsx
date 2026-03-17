@@ -1,9 +1,20 @@
 import type { FC } from "react";
-import { Button } from "@/shared/ui";
+import { Button, Loader } from "@/shared/ui";
 import { ResetIcon } from "@/shared/icons";
+import { usePositionStore } from "@/entities/position";
 
-const ResetPositionsBtn: FC = () => (
-  <Button handleClick={() => console.log("get positions list")} style="plain"><ResetIcon /></Button>
-);
+const ResetPositionsBtn: FC = () => {
+  const { fetchPositions, isLoading } = usePositionStore();
+
+  return (
+    <Button
+      handleClick={() => fetchPositions()}
+      isDisabled={isLoading}
+      style="plain"
+    >
+      {isLoading ? <Loader isVisible={isLoading} size="xs" /> : <ResetIcon />}
+    </Button>
+  )
+};
 
 export default ResetPositionsBtn;

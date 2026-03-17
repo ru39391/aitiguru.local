@@ -10,7 +10,7 @@ const Notification: FC = () => {
     return "";
   }
 
-  return notifications.map(({ id, type, title, desc }: TNotification, index) => {
+  return notifications.map(({ id, type, title, desc }: TNotification, index: number) => {
     const classNameMod = `notification__wrapper_type_${type}`
     const icons: Record<typeof type, JSX.Element> = {
       error: <CloseIcon />,

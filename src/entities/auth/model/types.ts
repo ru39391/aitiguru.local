@@ -17,6 +17,7 @@ export type TAuthStore = TAuthState & {
   init: () => Promise<void>;
   register: (data: TSignUpPayload) => Promise<boolean>;
   login: (data: TSignInPayload) => Promise<boolean>;
+  logout: () => Promise<void>;
 }
 
 export type TAuthApi = {
@@ -24,4 +25,5 @@ export type TAuthApi = {
   refreshToken: () => Promise<TAuthData>;
   signUp: (data: TSignUpPayload) => Promise<TAuthData>;
   signIn: (data: TSignInPayload) => Promise<TAuthData>;
+  removeToken: (payload: TAuthData) => Promise<TAuthData>;
 }

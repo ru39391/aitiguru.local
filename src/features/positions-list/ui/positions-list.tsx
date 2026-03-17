@@ -22,6 +22,13 @@ const PositionsList: FC = () => {
 
   const setClassName = (key: string): string => `${styles.positions__col} ${styles[`positions__col_type_${key}`]}`;
   const setRowClass = (keys: string[]): Record<string, string> => keys.reduce((acc, key) => ({ ...acc, [key]: setClassName(key) }), {});
+  const sort = (name) => {
+    if(!["price", "rating"].includes(name)) {
+      return;
+    }
+
+    console.log(name);
+  }
 
   return (
     <div className={styles.positions}>
@@ -30,7 +37,14 @@ const PositionsList: FC = () => {
           (acc, [key, value]) => [...acc, { name: key, caption: value }],
           [] as Record<string,string>[]
         ).map(({ name, caption }) => (
-          <div key={name} className={setClassName(name)}><span className={styles.positions__caption}>{caption}</span></div>
+          <div key={name} className={setClassName(name)}>
+            <span
+              className={styles.positions__caption}
+              onClick={() => sort(name)}
+            >
+              {caption}
+            </span>
+          </div>
         ))}
       </div>
       {positions.map(({ id, ...props }) => (

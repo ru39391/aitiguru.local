@@ -74,20 +74,17 @@ export const useAuthStore = create<TAuthStore>()(
       logout: async () => {
         set({ isLoading: true });
 
-        try {/*
-          const { user, isAuth } = await authApi.removeToken();
+        try {
+          const { user, isAuth } = await authApi.removeToken({ user: get().user, isAuth: get().isAuth });
 
           set({
-            user: null,
-            isAuth: false,
+            user,
+            isAuth,
             isLoading: false,
           });
-          */
         } finally {
           set({ isLoading: false });
         }
-
-        return get().isAuth;
       },
     }),
     { name: "AuthStore" },

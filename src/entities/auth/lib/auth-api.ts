@@ -2,7 +2,7 @@ import { apiHandler } from "@/shared/api";
 import { routes } from "@/shared/constants";
 import { tokenHandler, type TResponseData } from "@/shared/api";
 import type { TUserData } from "@/shared/types";
-import type { TAuthApi, TSignInPayload, TSignUpPayload } from "../model/types";
+import type { TAuthApi, TAuthData, TSignInPayload, TSignUpPayload } from "../model/types";
 
 export const authApi: TAuthApi = {
   handleUserData: async ({ data, success }: TResponseData<TUserData>) => {
@@ -36,5 +36,19 @@ export const authApi: TAuthApi = {
     const { data, success } = await apiHandler.create<TSignInPayload, TResponseData<TUserData>>(routes.api.login, payload);
 
     return this.handleUserData({ data, success });
+  },
+  removeToken: async (payload: TAuthData) => {
+    const { success } = await apiHandler.create<null, Pick<"success", TResponseData<null>>>(routes.api.logout);
+
+    if(!success) {
+      return payload;
+    }
+
+    await tokenHandler.removeValue();
+
+    return {
+      isAuth: false,
+      user: null
+    };
   },
 }

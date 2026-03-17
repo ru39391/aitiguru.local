@@ -18,6 +18,6 @@ export const positionApi: TPositionApi = {
     }`;
     const { data: { data, ...pagination } } = await apiHandler.fetch<TPositionData[]>(url);
 
-    return { data, pagination };
+    return Array.isArray(data) ? { data, pagination } : { data: [], pagination: null };
   }
 }
