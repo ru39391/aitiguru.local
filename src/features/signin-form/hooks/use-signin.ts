@@ -1,37 +1,36 @@
 import { useActionState } from "react";
 import { useNavigate } from "react-router";
+import { useAuthStore, type TSignInPayload } from "@/entities/auth";
+import { EXP_DEFAULT_VALUE } from "@/shared/constants";
+import { routes } from "@/shared/constants";
+import type { TFormHandler, TFormState } from "@/shared/types";
 
-export const useSignIn = () => { //: IFormHook<TLoginPayload>
-  //const { login } = useAuthStore();
+export const useSignIn = (): TFormHandler<TSignInPayload> => {
+  const { login } = useAuthStore();
   const navigate = useNavigate();
 
-  const submitForm = () => console.log('submitForm');/*
-    () =>
-    async (
+    const submitForm = () => async (
       _: unknown,
-      formData: FormData,
-    ): Promise<TFormState<TLoginPayload>> => {
-      const values = Object.fromEntries(formData) as TLoginPayload;
-      const { message, success } = await login(values);
+      formData: FormData
+    ): Promise<TFormState<TSignInPayload>> => {
+      const { term, ...values } = Object.fromEntries(formData) as TSignInPayload;
 
-      if (success) {
+      const res = await login({ ...values, term: term ? EXP_DEFAULT_VALUE : 0 });
+
+      if (res) {
         navigate(routes.protected.home, { replace: true });
       }
 
       return {
-        message: message || "",
-        ...(!success && { values }),
+        ...(!res && { values })
       };
     };
-    */
 
-  const [formState, dispatchForm, isPending] = useActionState(submitForm(), {
-    message: "",
-  });
+    const [formState, dispatchForm, isPending] = useActionState(submitForm(), {});
 
-  return {
-    formState,
-    dispatchForm,
-    isPending,
+    return {
+      formState,
+      dispatchForm,
+      isPending,
+    };
   };
-};

@@ -11,8 +11,10 @@ export interface ITextFieldInput {
 }
 
 export interface ITextField extends ITextFieldInput {
+  handleFieldValue?: (input: HTMLInputElement | null) => void;
   children?: ReactNode;
   errorValue: string;
   icon?: ReactNode;
+  isBtnVisible: boolean;
   label?: string;
 }

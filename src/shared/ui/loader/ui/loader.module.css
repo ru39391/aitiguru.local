@@ -14,6 +14,21 @@
   animation: spin 1.5s linear infinite;
 }
 
+.loader__icon_xs {
+  width: 24px;
+  height: 24px;
+}
+
+.loader__icon_sm {
+  width: 32px;
+  height: 32px;
+}
+
+.loader__icon_md {
+  width: 48px;
+  height: 48px;
+}
+
 .loader__bg {
   color: var(--color-grey);
   opacity: 0.3;

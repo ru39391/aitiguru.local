@@ -1,7 +1,12 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { authApi } from "../lib/auth-api";
-import type { TAuthState, TAuthStore, TSignUpPayload } from "./types";
+import type {
+  TAuthState,
+  TAuthStore,
+  TSignInPayload,
+  TSignUpPayload
+} from "./types";
 
 const initialState: TAuthState = {
   user: null,
@@ -35,6 +40,24 @@ export const useAuthStore = create<TAuthStore>()(
 
         try {
           const { user, isAuth } = await authApi.signUp(payload);
+
+          set({
+            user,
+            isAuth,
+            isLoading: false,
+          });
+        } finally {
+          set({ isLoading: false });
+        }
+
+        return get().isAuth;
+      },
+
+      login: async (payload: TSignInPayload) => {
+        set({ isLoading: true });
+
+        try {
+          const { user, isAuth } = await authApi.signIn(payload);
 
           set({
             user,

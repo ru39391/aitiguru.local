@@ -17,6 +17,8 @@ type TValidateForm = Record<"validateEmailField" |
   inputErrors: TInputErrors;
   isBtnDisabled: boolean;
   pwdData: TPwdData;
+  resetFieldValue: (input: HTMLInputElement | null) => void;
+  togglePwdField: (input: HTMLInputElement | null) => void;
 };
 
 export const useValidateForm = (): TValidateForm => {
@@ -82,10 +84,34 @@ export const useValidateForm = (): TValidateForm => {
 
   const handleBtnDisabled = (): boolean => Object.values(inputErrors).reduce((acc, value) => acc || Boolean(value), false);
 
+  const resetFieldValue = (input: HTMLInputElement | null) => {
+    if(!input) {
+      return;
+    }
+
+    input.value = "";
+    setInputErrors(
+      Object.entries(inputErrors).reduce(
+        (acc, [key, value]) => (key === input.name ? acc : { ...acc, [key]: value }),
+        {}
+      )
+    );
+  }
+
+  const togglePwdField = (input: HTMLInputElement | null) => {
+    if(!input) {
+      return;
+    }
+
+    input.type = input.type === "text" ? "password" : "text";
+  }
+
   return {
     inputErrors,
     isBtnDisabled: handleBtnDisabled(),
     pwdData,
+    resetFieldValue,
+    togglePwdField,
     validateEmailField,
     validatePlainField,
     validatePwdField,

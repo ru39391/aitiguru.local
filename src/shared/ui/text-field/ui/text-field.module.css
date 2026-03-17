@@ -35,6 +35,12 @@
   color: var(--color-neutral-dark);
 }
 
+.field__icon svg {
+  max-width: 24px;
+  width: 100%;
+  height: auto;
+}
+
 .field__input {
   flex-grow: 1;
   padding: 14px 10px;
@@ -61,6 +67,20 @@
 
 .field_type_error .field__error {
   display: block;
+}
+
+.field__btn {
+  display: none;
+}
+
+.field__btn_visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  color: var(--color-neutral-dark);
+  cursor: pointer;
 }
 
 @keyframes show {

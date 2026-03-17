@@ -1,23 +1,29 @@
 import type { FC } from "react";
 import { Link } from "react-router";
 import { AuthForm } from "@/entities/auth-form";
-import { InputBtn } from "@/entities/input-btn";
-import { Button, TextField } from "@/shared/ui";
-import { CloseIcon, EyeIcon, LockIcon, UserIcon } from "@/shared/icons";
+import { Button, Checkbox, TextField } from "@/shared/ui";
+import { CloseIcon, EyeCloseIcon, LockIcon, UserIcon } from "@/shared/icons";
+import { Loader } from "@/shared/ui";
 import { routes } from "@/shared/constants";
+import { useValidateForm } from "@/shared/hooks";
 import { useSignIn } from "../hooks/use-signin";
-
-const LoginInputBtn: FC = () => {
-
-  return <InputBtn handleClick={() => console.log('CloseIcon')}><EyeIcon /></InputBtn>;
-};
+import type { ITextFieldInput } from "@/shared/ui/text-field";
 
 const SignInFormFooter: FC = () => <>Нет аккаунта? <Link to={routes.public.signup}>Создать</Link></>;
 
 const SignInForm: FC = () => {
   const { formState, dispatchForm, isPending } = useSignIn();
+  const {
+    inputErrors,
+    isBtnDisabled,
+    resetFieldValue,
+    togglePwdField,
+    validateEmailField,
+    validatePwdField,
+    validateConfirmPwdField,
+    unsetInvalidData
+  } = useValidateForm();
 
-  console.log({formState});
   return (
     <AuthForm
       action={dispatchForm}
@@ -28,25 +34,53 @@ const SignInForm: FC = () => {
       {[
         {
           icon: <UserIcon />,
-          label: "Логин",
-          name: "login",
-          type: "text",
+          name: "email",
+          label: "E-mail",
+          type: "email",
+          defaultValue: formState?.values?.email || "",
+          handleBlur: validateEmailField as ITextFieldInput["handleBlur"],
+          handleChange: unsetInvalidData,
+          handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
         }, {
           icon: <LockIcon />,
-          label: "Пароль",
           name: "password",
+          label: "Пароль",
           type: "password",
+          defaultValue: formState?.values?.password || "",
+          handleBlur: validatePwdField as ITextFieldInput["handleBlur"],
+          handleChange: validateConfirmPwdField as ITextFieldInput["handleChange"],
+          handleFieldValue: (input: HTMLInputElement | null) => togglePwdField(input)
         }
-      ].map(({ name, ...props }) => (
+      ].map(({
+        name,
+        type,
+        ...props
+      }) => (
         <TextField
           key={name}
           isRequired
-          {...props}
+          {...{
+            ...props,
+            errorValue: inputErrors[name] || "",
+            isBtnVisible: type === "password" ? true : inputErrors[name] !== undefined,
+            name,
+            type
+          }}
         >
-          <LoginInputBtn />
+          {type === "password" ? <EyeCloseIcon />: <CloseIcon />}
         </TextField>
       ))}
-      <Button caption="Войти" type="submit" isDisabled={isPending} />
+      <Checkbox
+        caption="Запомнить данные"
+        name="term"
+      />
+      <Button
+        caption={!isPending ? "Войти" : ""}
+        isDisabled={isPending || isBtnDisabled}
+        type="submit"
+      >
+        <Loader isVisible={isPending} size="xs" />
+      </Button>
     </AuthForm>
   )
 };
