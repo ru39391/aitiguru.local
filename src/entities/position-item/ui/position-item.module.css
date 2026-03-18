@@ -112,3 +112,7 @@
     display: none;
   }
 }
+
+.meta__danger {
+  color: var(--color-danger);
+}

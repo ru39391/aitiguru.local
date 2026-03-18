@@ -1,1 +1,1 @@
-export type TPositionData = Record<"id" | "price", number> & Record<"img" | "name" | "category" | "vendor" | "article" | "rating" | "createdAt" | "updatedAt", string>;
+export type TPositionData = Record<"id" | "price" | "rating", number> & Record<"img" | "name" | "category" | "vendor" | "article" | "createdAt" | "updatedAt", string>;

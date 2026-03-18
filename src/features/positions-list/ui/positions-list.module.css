@@ -94,3 +94,21 @@
   font-weight: var(--fw-black);
   color: var(--color-border-dark);
 }
+
+.positions__sortdir {
+  display: none;
+}
+
+.positions__caption_type_price,
+.positions__caption_type_rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0 8px;
+}
+
+.positions__caption_type_price .positions__sortdir,
+.positions__caption_type_rating .positions__sortdir {
+  display: block;
+}

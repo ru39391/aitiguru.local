@@ -15,3 +15,8 @@ export type TPositionStore = TPositionState & {
 export type TPositionApi = {
   fetchItems: (data: TPaginationPayload) => Promise<Omit<TPositionState, "isLoading">>;
 }
+
+export type TQueryData = {
+  sortby: Pick<"id" | "price" | "rating", TPositionData>;
+  sortdir: "ASC" | "DESC";
+}

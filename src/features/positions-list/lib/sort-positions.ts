@@ -1,0 +1,30 @@
+import { getStorageData, handleStorageData } from "@/shared/utils";
+import { QUERY_KEY } from "@/shared/constants";
+import { usePositionStore, type TQueryData } from "@/entities/position";
+
+export const sortPositions = async (sortby: TQueryData["sortby"] = "id"): Promise<TQueryData | null> => {
+  const storageData = getStorageData(QUERY_KEY);
+  const { sortdir } = storageData || { sortdir: "DESC" };
+  const { data: positions } = usePositionStore.getState();
+  const currSortdir = sortdir === "DESC" ? "ASC" : "DESC";
+
+  const { success, data } = await handleStorageData({
+    sortby,
+    sortdir: storageData ? currSortdir : sortdir
+  });
+
+  if(!success) {
+    return null;
+  }
+
+  const sortedPositions = [...positions].sort((a, b) => {
+    const aValue = a[sortby];
+    const bValue = b[sortby];
+
+    return data.sortdir === "ASC" ? aValue - bValue : bValue - aValue;
+  });
+
+  usePositionStore.setState({ data: sortedPositions  });
+
+  return data;
+}

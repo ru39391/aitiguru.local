@@ -14,3 +14,5 @@ export const routes = {
     logout: "/auth/logout",
   },
 } as const;
+
+export const QUERY_KEY = "query";

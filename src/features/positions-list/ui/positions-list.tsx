@@ -1,16 +1,15 @@
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import { Button } from "@/shared/ui";
 import { DotsIcon, PlusIcon } from "@/shared/icons";
 import { PositionItem } from "@/entities/position-item";
-import { usePositionStore } from "@/entities/position";
+import { sortPositions } from "../lib/sort-positions";
+import { usePositionStore, type TQueryData } from "@/entities/position";
+import { type TPositionData } from "@/shared/types";
 import styles from './positions-list.module.css';
 
 const PositionsList: FC = () => {
+  const [sortData, setSortData] = useState<TQueryData>(null);
   const { data: positions, isLoading } = usePositionStore();
-
-  if(!isLoading && !positions.length) {
-    return <div className={styles.positions}>Нет товаров в наличии</div>
-  }
 
   const captions = {
     name: "Наименование",
@@ -22,12 +21,20 @@ const PositionsList: FC = () => {
 
   const setClassName = (key: string): string => `${styles.positions__col} ${styles[`positions__col_type_${key}`]}`;
   const setRowClass = (keys: string[]): Record<string, string> => keys.reduce((acc, key) => ({ ...acc, [key]: setClassName(key) }), {});
-  const sort = (name) => {
-    if(!["price", "rating"].includes(name)) {
+  const sortColValues = async (name: keyof TPositionData) => {
+    const arr = ["price", "rating"] as (keyof TPositionData)[];
+
+    if(!arr.includes(name)) {
       return;
     }
 
-    console.log(name);
+    const data = await sortPositions(name as TQueryData["sortby"]);
+
+    setSortData(data);
+  }
+
+  if(!isLoading && !positions.length) {
+    return <div className={styles.positions}>Нет товаров в наличии</div>
   }
 
   return (
@@ -39,10 +46,12 @@ const PositionsList: FC = () => {
         ).map(({ name, caption }) => (
           <div key={name} className={setClassName(name)}>
             <span
-              className={styles.positions__caption}
-              onClick={() => sort(name)}
+              className={`${styles.positions__caption} ${styles[`positions__caption_type_${name}`]}`}
+              onClick={() => sortColValues(name)}
             >
               {caption}
+              {sortData?.sortby === name && sortData?.sortdir === "ASC" && <span className={styles.positions__sortdir}>▲</span>}
+              {sortData?.sortby === name && sortData?.sortdir === "DESC" && <span className={styles.positions__sortdir}>▼</span>}
             </span>
           </div>
         ))}
