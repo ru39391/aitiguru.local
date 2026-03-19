@@ -1,2 +1,2 @@
-export * from "./handle-storage-data";
+export * from "./storage-handler";
 export * from "./helpers";
