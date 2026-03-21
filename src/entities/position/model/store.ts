@@ -29,10 +29,9 @@ export const usePositionStore = create<TPositionStore>()(
           set({ isLoading: false });
         }
       },
-      /*
       createPosition: async (payload) => {
       },
-
+      /*
       updatePosition: async (payload) => {
       },
 

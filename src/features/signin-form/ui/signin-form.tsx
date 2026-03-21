@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Link } from "react-router";
-import { AuthForm } from "@/entities/auth-form";
+import { Form } from "@/entities/form";
 import { Button, Checkbox, TextField } from "@/shared/ui";
 import { CloseIcon, EyeCloseIcon, LockIcon, UserIcon } from "@/shared/icons";
 import { Loader } from "@/shared/ui";
@@ -25,7 +25,7 @@ const SignInForm: FC = () => {
   } = useValidateForm();
 
   return (
-    <AuthForm
+    <Form
       action={dispatchForm}
       title="Добро пожаловать!"
       subtitle="Пожалуйста, авторизируйтесь"
@@ -81,7 +81,7 @@ const SignInForm: FC = () => {
       >
         <Loader isVisible={isPending} size="xs" />
       </Button>
-    </AuthForm>
+    </Form>
   )
 };
 

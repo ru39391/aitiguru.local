@@ -1,9 +1,12 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { AddIcon } from "@/shared/icons";
 import { Button } from "@/shared/ui";
+import { useModalStore } from "@/shared/store";
 
-const CreatePositionsBtn: FC = () => (
-  <Button handleClick={() => console.log("show add position form")} caption="Добавить" style="row"><AddIcon /></Button>
-);
+const CreatePositionBtn: FC<{ children: ReactNode }> = ({ children }) => {
+  const { open } = useModalStore();
 
-export default CreatePositionsBtn;
+  return <Button handleClick={() => open({ content: children })} caption="Добавить" style="row"><AddIcon /></Button>;
+};
+
+export default CreatePositionBtn;

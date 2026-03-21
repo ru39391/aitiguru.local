@@ -1,0 +1,93 @@
+import { type FC } from "react";
+import { Form } from "@/entities/form";
+import { Button, TextField } from "@/shared/ui";
+import { CloseIcon } from "@/shared/icons";
+import { Loader } from "@/shared/ui";
+import { useValidateForm } from "@/shared/hooks";
+import { useCreatePosition } from "../hooks/use-create-position";
+import type { ITextFieldInput } from "@/shared/ui/text-field";
+
+const CreatePositionForm: FC = () => {
+  const { formState, dispatchForm, isPending } = useCreatePosition();
+  const {
+    inputErrors,
+    isBtnDisabled,
+    resetFieldValue,
+    validatePlainField,
+    unsetInvalidData
+  } = useValidateForm();
+
+  return (
+    <Form
+      action={dispatchForm}
+      title="Добавить товар"
+      isLogoVisible={false}
+    >
+      {[
+        {
+          name: "name",
+          label: "Название",
+          defaultValue: formState?.values?.name || "",
+        },
+        {
+          name: "category",
+          label: "Категория",
+          defaultValue: formState?.values?.category || "",
+        },
+        {
+          name: "vendor",
+          label: "Производитель",
+          defaultValue: formState?.values?.vendor || "",
+        },
+        {
+          name: "article",
+          label: "Артикул",
+          defaultValue: formState?.values?.article || "",
+        },
+        {
+          name: "rating",
+          label: "Оценка",
+          // TODO: настроить валидацию числового значения поля
+          defaultValue: formState?.values?.rating || "",
+        },
+        {
+          name: "price",
+          label: "Цена, руб.",
+          // TODO: настроить валидацию числового значения поля
+          defaultValue: formState?.values?.price || "",
+        },
+      ].map(({
+        defaultValue,
+        label,
+        name,
+      }) => (
+        <TextField
+          key={name}
+          isRequired
+          {...{
+            defaultValue,
+            errorValue: inputErrors[name] || "",
+            isBtnVisible:  inputErrors[name] !== undefined,
+            name,
+            label,
+            type: "text",
+            handleBlur: validatePlainField as ITextFieldInput["handleBlur"],
+            handleChange: unsetInvalidData,
+            handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
+          }}
+        >
+          <CloseIcon />
+        </TextField>
+      ))}
+      <Button
+        caption={!isPending ? "Добавить товар" : ""}
+        isDisabled={isPending || isBtnDisabled}
+        type="submit"
+      >
+        <Loader isVisible={isPending} size="xs" />
+      </Button>
+    </Form>
+  )
+};
+
+export default CreatePositionForm;

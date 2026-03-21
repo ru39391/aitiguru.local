@@ -1,5 +1,6 @@
 import { useEffect, type FC } from "react";
-import { CreatePositionsBtn } from "@/features/create-position-btn";
+import { CreatePositionBtn } from "@/features/create-position-btn";
+import { CreatePositionForm } from "@/features/create-position-form";
 import { Loader } from "@/shared/ui";
 import { PositionsCounter } from "@/features/positions-counter";
 import { PositionsList } from "@/features/positions-list";
@@ -17,7 +18,12 @@ const PositionsWrapper: FC = () => {
 
   return (
     <Wrapper
-      aside={(<><ResetPositionsBtn /><CreatePositionsBtn /></>)}
+      aside={(
+        <>
+          <ResetPositionsBtn />
+          <CreatePositionBtn><CreatePositionForm /></CreatePositionBtn>
+        </>
+      )}
       footer={(<><PositionsCounter /><PositionsPagination /></>)}
       title="Все позиции"
     >

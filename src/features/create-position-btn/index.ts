@@ -1,1 +1,1 @@
-export { default as CreatePositionsBtn } from "./ui/create-position-btn";
+export { default as CreatePositionBtn } from "./ui/create-position-btn";

@@ -1,5 +1,5 @@
+import { Modal } from "@/shared/ui/modal";
 import { Notification } from "@/entities/notification";
-//import { ModalContainer } from "@/entities/modal";
 import { RouterProvider } from "./";
 
 const AppProvider = () => {
@@ -7,9 +7,7 @@ const AppProvider = () => {
     <>
       <RouterProvider />
       <Notification />
-      {/*
-      <ModalContainer />
-      */}
+      <Modal />
     </>
   );
 };
