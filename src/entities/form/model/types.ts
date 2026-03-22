@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { ICard } from "@/shared/ui";
 
 export interface IForm {
   action: (formData: FormData) => void | Promise<void>;
@@ -7,4 +8,6 @@ export interface IForm {
   children: ReactNode;
   footer?: ReactNode;
   isLogoVisible?: boolean;
+  type?: "grid";
+  mod?: ICard["type"];
 }

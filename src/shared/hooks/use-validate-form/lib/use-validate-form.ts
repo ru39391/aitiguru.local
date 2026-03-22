@@ -19,6 +19,17 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
+  const validateNumberField = (event: Event) => {
+    const { name, value } = event.target as HTMLInputElement;
+    const numValue = parseFloat(value);
+    const isValueValid = value.length > 0 && numValue > 0 && !isNaN(numValue);
+
+    setInputErrors({
+      ...inputErrors,
+      ...(!isValueValid && { [name]: value.length === 0 ? FORM_ERRORS.required : FORM_ERRORS.num })
+    });
+  }
+
   const validatePlainField = (event: Event) => {
     const { name, value } = event.target as HTMLInputElement;
 
@@ -98,6 +109,7 @@ export const useValidateForm = (): TValidateForm => {
     resetFieldValue,
     togglePwdField,
     validateEmailField,
+    validateNumberField,
     validatePlainField,
     validatePwdField,
     validateConfirmPwdField,

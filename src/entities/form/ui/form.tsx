@@ -1,21 +1,34 @@
 import { type FC } from "react";
-import { Logo } from "@/shared/ui";
+import { Card, Logo } from "@/shared/ui";
 import { type IForm } from "../model/types";
 import styles from './form.module.css';
 
-const Form: FC<IForm> = ({ action, title, subtitle, children, footer, isLogoVisible = true }) => {
+const Form: FC<IForm> = ({
+  action,
+  title,
+  subtitle,
+  children,
+  footer,
+  isLogoVisible = true,
+  type,
+  mod
+}) => {
   const isFooterExist = Boolean(footer);
+  const classMod = type ? `${styles.form__wrapper} ${styles[`form__wrapper_type_${type}`]}` : styles.form__wrapper;
 
-  // TODO: добавить стили для формы в модальном окне
   return (
     <form className={styles.form} action={action}>
-      {isLogoVisible && <Logo className={styles.form__logo} />}
-      <div className={styles.form__header}>
-        {Boolean(title) && <div className={styles.form__title}>{title}</div>}
-        {Boolean(subtitle) && <div className={styles.form__subtitle}>{subtitle}</div>}
-      </div>
-      <div className={styles.form__wrapper}>{children}{isFooterExist && <div className={styles.form__divider}>или</div>}</div>
-      {isFooterExist && <div className={styles.form__footer}>{footer}</div>}
+      <Card
+        {...{
+          title,
+          subtitle,
+          header: isLogoVisible && <Logo className={styles.form__logo} />,
+          type: mod
+        }}
+      >
+        <div className={classMod}>{children}{isFooterExist && <div className={styles.form__divider}>или</div>}</div>
+        {isFooterExist && <div className={styles.form__footer}>{footer}</div>}
+      </Card>
     </form>
   )
 };

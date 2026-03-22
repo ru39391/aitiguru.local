@@ -13,12 +13,14 @@
 }
 
 .modal__wrapper {
-
+  width: 100%;
+  max-width: 660px;
 }
 
 .modal__close {
   position: absolute;
   top: 16px;
   right: 16px;
+  padding: 8px;
   color: var(--color-white);
 }

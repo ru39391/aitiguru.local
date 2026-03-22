@@ -13,6 +13,7 @@ const CreatePositionForm: FC = () => {
     inputErrors,
     isBtnDisabled,
     resetFieldValue,
+    validateNumberField,
     validatePlainField,
     unsetInvalidData
   } = useValidateForm();
@@ -22,6 +23,8 @@ const CreatePositionForm: FC = () => {
       action={dispatchForm}
       title="Добавить товар"
       isLogoVisible={false}
+      mod={["md", "grid"]}
+      type="grid"
     >
       {[
         {
@@ -47,13 +50,11 @@ const CreatePositionForm: FC = () => {
         {
           name: "rating",
           label: "Оценка",
-          // TODO: настроить валидацию числового значения поля
           defaultValue: formState?.values?.rating || "",
         },
         {
           name: "price",
           label: "Цена, руб.",
-          // TODO: настроить валидацию числового значения поля
           defaultValue: formState?.values?.price || "",
         },
       ].map(({
@@ -71,7 +72,9 @@ const CreatePositionForm: FC = () => {
             name,
             label,
             type: "text",
-            handleBlur: validatePlainField as ITextFieldInput["handleBlur"],
+            handleBlur: ["rating", "price"].includes(name)
+              ? validateNumberField as ITextFieldInput["handleBlur"]
+              : validatePlainField as ITextFieldInput["handleBlur"],
             handleChange: unsetInvalidData,
             handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
           }}
