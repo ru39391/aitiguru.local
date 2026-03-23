@@ -23,5 +23,19 @@ export const positionApi: TPositionApi = {
     const { data: { data, ...pagination } } = await apiHandler.fetch<TPositionData[]>(url);
 
     return Array.isArray(data) ? { data, pagination } : { data: [], pagination: null };
-  }
+  },
+  addItem: async ({ item, arr, pagination }) => {
+    const { data } = await apiHandler.create<Partial<TPositionData>, TPositionData>(routes.api.positions, item);
+    const { success, ...position } = data as TPositionData & { success: boolean };
+
+    return {
+      data: success ? [position, ...arr] : arr,
+      pagination: {
+        ...pagination,
+        perPage: success ? pagination.perPage + 1 : pagination.perPage,
+        totalCount: success ? pagination.totalCount + 1 : pagination.totalCount
+      },
+      success
+    };
+  },
 }

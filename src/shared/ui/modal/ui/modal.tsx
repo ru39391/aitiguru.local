@@ -1,14 +1,10 @@
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import { useModalStore } from "@/shared/store";
 import { CloseIcon } from "@/shared/icons";
 import styles from './modal.module.css';
 
 const Modal: FC = () => {
   const { content, isOpen, close } = useModalStore();
-
-  useEffect(() => {
-    console.log(content);
-  }, [content]);
 
   if(!isOpen) {
     return "";

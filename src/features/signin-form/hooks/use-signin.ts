@@ -15,14 +15,14 @@ export const useSignIn = (): TFormHandler<TSignInPayload> => {
     ): Promise<TFormState<TSignInPayload>> => {
       const { term, ...values } = Object.fromEntries(formData) as TSignInPayload;
 
-      const res = await login({ ...values, term: term ? EXP_DEFAULT_VALUE : 0 });
+      const isAuth = await login({ ...values, term: term ? EXP_DEFAULT_VALUE : 0 });
 
-      if (res) {
+      if (isAuth) {
         navigate(routes.protected.home, { replace: true });
       }
 
       return {
-        ...(!res && { values })
+        ...(!isAuth && { values })
       };
     };
 

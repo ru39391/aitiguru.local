@@ -16,9 +16,9 @@ const PositionMeta: FC<{
       <input id={id} className={styles.meta__toggler} type="checkbox" onChange={() => setChecked(!isChecked)} checked={isChecked} />
       <label htmlFor={id} className={isChecked ? `${styles.meta__label} ${styles.meta__label_checked}` : styles.meta__label}></label>
       <div className={styles.meta__row}>
-        {Boolean(img) && <div className={styles.meta__picture}>
-          <img className={styles.meta__img} src={img} alt={name} />
-        </div>}
+        <div className={styles.meta__picture}>
+          {Boolean(img) && <img className={styles.meta__img} src={img} alt={name} />}
+        </div>
         <div className={styles.meta__title}>{name}</div>
         {Boolean(category) && <div className={styles.meta__subtitle}>{category}</div>}
       </div>

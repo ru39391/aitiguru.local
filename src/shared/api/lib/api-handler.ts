@@ -29,7 +29,6 @@ const handleApiClient = async <P, R>(
     }
 
     res = { data, success, message };
-    console.log('handleApiClient, debug: ', { data, success, message });
   } catch (error) {
     const errorData = error as { message?: string };
 

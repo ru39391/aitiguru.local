@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { positionApi } from "../lib/position-api";
-import type { TPaginationPayload, TPositionState, TPositionStore } from "./types";
+import type { TPositionState, TPositionStore } from "./types";
 
 const initialState: TPositionState = {
   data: [],
@@ -14,7 +14,7 @@ export const usePositionStore = create<TPositionStore>()(
     (set, get) => ({
       ...initialState,
 
-      fetchPositions: async (payload: TPaginationPayload = null) => {
+      fetchPositions: async (payload = null) => {
         set({ isLoading: true });
 
         try {
@@ -30,6 +30,28 @@ export const usePositionStore = create<TPositionStore>()(
         }
       },
       createPosition: async (payload) => {
+        let isSucceed = false;
+
+        set({ isLoading: true });
+
+        try {
+          const {
+            data,
+            pagination,
+            success
+          } = await positionApi.addItem({ item: payload, arr: get().data, pagination: get().pagination });
+
+          isSucceed = success;
+          set({
+            data,
+            pagination,
+            isLoading: false,
+          });
+        } finally {
+          set({ isLoading: false });
+        }
+
+        return isSucceed;
       },
       /*
       updatePosition: async (payload) => {

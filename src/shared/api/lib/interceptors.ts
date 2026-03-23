@@ -43,7 +43,7 @@ export const responseInterceptor = async <T>(
   res = {
     data: data.data !== undefined ? data.data : data as T,
     success,
-    message: data.message?.toString(),
+    message: data.message?.toString() || "",
   };
 
   return new Promise((resolve) => resolve(res));

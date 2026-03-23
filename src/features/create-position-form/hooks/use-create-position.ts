@@ -1,34 +1,31 @@
 import { useActionState } from "react";
 import { useModalStore } from "@/shared/store";
+import { useNotificationStore } from "@/shared/store";
 import { usePositionStore } from "@/entities/position";
+import { ADD_POSITION_SUCCEED } from "@/shared/constants";
 import type { TFormHandler, TFormState, TPositionData } from "@/shared/types";
 
-export const useCreatePosition = (): TFormHandler<TPositionData> => {
+export const useCreatePosition = (): TFormHandler<Partial<TPositionData>> => {
+  const { close: closeModal } = useModalStore();
+  const { add: addNotification } = useNotificationStore();
   const { createPosition } = usePositionStore();
 
   const submitForm = () => async (
     _: unknown,
     formData: FormData
-  ): Promise<TFormState<TPositionData>> => {
-    const values = Object.fromEntries(formData) as TPositionData;
+  ): Promise<TFormState<Partial<TPositionData>>> => {
+    const { price, ...values } = Object.fromEntries(formData) as Partial<TPositionData>;
 
-    console.log(values);
-    return {
-      values
-    };
+    const success = await createPosition({ ...values, price: parseFloat(price) });
 
-    /*
-    // TODO: настроить метод createPosition
-    //const res = await createPosition(values);
-
-    if (res) {
-      // TODO: закрыть модальное окно
+    if (success) {
+      closeModal();
+      addNotification({ title: ADD_POSITION_SUCCEED, type: "success" });
     }
 
     return {
-      ...(!res && { values })
+      ...(!success && { values })
     };
-    */
   };
 
   const [formState, dispatchForm, isPending] = useActionState(submitForm(), {});
