@@ -1,15 +1,39 @@
 import { useState, type FC } from "react";
 import { Button } from "@/shared/ui";
-import { DotsIcon, PlusIcon } from "@/shared/icons";
+import { Card } from "@/shared/ui";
+import { EditIcon, TrashBinIcon } from "@/shared/icons";
 import { PositionItem } from "@/entities/position-item";
 import { sortPositions } from "../lib/sort-positions";
+import { useHandlePositions } from "../hooks/use-handle-positions";
+import { useModalStore } from "@/shared/store";
 import { usePositionStore, type TQueryData } from "@/entities/position";
 import { type TPositionData } from "@/shared/types";
 import styles from './positions-list.module.css';
 
+const RemovePositionModal: FC<{ id: TPositionData["id"]; name: TPositionData["name"]; }> = ({ id, name }) => {
+  const { close } = useModalStore();
+  const { handleRemoveItem } = useHandlePositions();
+
+  return (
+    <Card
+      {...{
+        title: "Удалить товар",
+        subtitle: `Вы действительно хотите удалить товар ${name}?`,
+        type: ["md"]
+      }}
+    >
+      <div className={styles.positions__actions}>
+        <Button handleClick={() => handleRemoveItem(id)} style="row">Да</Button>
+        <Button handleClick={() => close()} style="plain">Нет</Button>
+      </div>
+    </Card>
+  )
+};
+
 const PositionsList: FC = () => {
   const [sortData, setSortData] = useState<TQueryData>(null);
-  const { data: positions, isLoading } = usePositionStore();
+  const { open } = useModalStore();
+  const { data: positions, isLoading, setCurrPosition } = usePositionStore();
 
   const captions = {
     name: "Наименование",
@@ -65,11 +89,17 @@ const PositionsList: FC = () => {
             {...props}
           >
             <div className={styles.positions__col_type_btns}>
-              <Button handleClick={() => console.log(`edit ${props.name}, id = ${id.toString()}`)} style="icon">
-                <PlusIcon />
+              <Button
+                handleClick={() => setCurrPosition(id)}
+                style="icon"
+              >
+                <EditIcon />
               </Button>
-              <Button handleClick={() => console.log(`show context menu for ${props.name}, id = ${id.toString()}`)} style="unstyled">
-                <DotsIcon />
+              <Button
+                handleClick={() => open({ content: <RemovePositionModal {...{ id, name: props.name }} /> })}
+                style="unstyled"
+              >
+                <TrashBinIcon />
               </Button>
             </div>
           </PositionItem>

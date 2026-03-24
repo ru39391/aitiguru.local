@@ -39,6 +39,8 @@
 }
 
 .btn_type_plain {
+  font-size: var(--font-size-sm);
+  letter-spacing: 0;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid var(--color-border);

@@ -3,12 +3,14 @@ import { Form } from "@/entities/form";
 import { Button, TextField } from "@/shared/ui";
 import { CloseIcon } from "@/shared/icons";
 import { Loader } from "@/shared/ui";
+import { usePositionStore } from "@/entities/position";
 import { useValidateForm } from "@/shared/hooks";
 import { useCreatePosition } from "../hooks/use-create-position";
 import type { ITextFieldInput } from "@/shared/ui/text-field";
 
 const CreatePositionForm: FC = () => {
   const { formState, dispatchForm, isPending } = useCreatePosition();
+  const { current: position } = usePositionStore();
   const {
     inputErrors,
     isBtnDisabled,
@@ -21,7 +23,7 @@ const CreatePositionForm: FC = () => {
   return (
     <Form
       action={dispatchForm}
-      title="Добавить товар"
+      title={`${position ? "Редактировать" : "Добавить"} товар`}
       isLogoVisible={false}
       mod={["md", "grid"]}
       type="grid"
@@ -30,37 +32,37 @@ const CreatePositionForm: FC = () => {
         {
           name: "name",
           label: "Название",
-          defaultValue: formState?.values?.name || "",
+          defaultValue: formState?.values?.name || position?.name || "",
         },
         {
           name: "category",
           label: "Категория",
-          defaultValue: formState?.values?.category || "",
+          defaultValue: formState?.values?.category || position?.category || "",
         },
         {
           name: "vendor",
           label: "Производитель",
-          defaultValue: formState?.values?.vendor || "",
+          defaultValue: formState?.values?.vendor || position?.vendor || "",
         },
         {
           name: "article",
           label: "Артикул",
-          defaultValue: formState?.values?.article || "",
+          defaultValue: formState?.values?.article || position?.article || "",
         },
         {
           name: "rating",
           label: "Оценка",
-          defaultValue: formState?.values?.rating || "",
+          defaultValue: formState?.values?.rating || position?.rating || "",
         },
         {
           name: "price",
           label: "Цена, руб.",
-          defaultValue: formState?.values?.price || "",
+          defaultValue: formState?.values?.price || position?.price || "",
         },
       ].map(({
         defaultValue,
         label,
-        name,
+        name
       }) => (
         <TextField
           key={name}
@@ -83,7 +85,7 @@ const CreatePositionForm: FC = () => {
         </TextField>
       ))}
       <Button
-        caption={!isPending ? "Добавить товар" : ""}
+        caption={!isPending ? "Сохранить" : ""}
         isDisabled={isPending || isBtnDisabled}
         type="submit"
       >

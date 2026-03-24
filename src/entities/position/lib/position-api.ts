@@ -38,4 +38,17 @@ export const positionApi: TPositionApi = {
       success
     };
   },
+  removeItem: async ({ id, arr, pagination }) => {
+    const { success } = await apiHandler.remove<null, { success: boolean; }>(`${routes.api.positions}/${id}`);
+
+    return {
+      data: success ? [...arr].filter(item => Number(item.id) !== Number(id)) : arr,
+      pagination: {
+        ...pagination,
+        perPage: success ? pagination.perPage - 1 : pagination.perPage,
+        totalCount: success ? pagination.totalCount - 1 : pagination.totalCount
+      },
+      success
+    };
+  },
 }

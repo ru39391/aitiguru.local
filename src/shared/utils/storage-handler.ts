@@ -15,10 +15,7 @@ export class StorageHandler {
     localStorage.setItem(key, JSON.stringify(payload));
   }
 
-// TODO: настроить сохранение данных пагинации
 // TODO: настроить поиск
-// TODO: настроить модальное окно
-// TODO: настроить создание/удаление товаров
 // TODO: настроить прогресс бар
 // TODO: настроить ya cloud
   static async handleData<T>(payload: T, key: string): Promise<{ success: boolean; data: T | null; }> {

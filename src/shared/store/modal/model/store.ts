@@ -13,8 +13,6 @@ export const useModalStore = create<TModalStore>()(
       ...initialState,
 
       open: (config) => {
-        console.log('config: ', config);
-
         set({
           isOpen: true,
           ...(config && { content: config.content }),

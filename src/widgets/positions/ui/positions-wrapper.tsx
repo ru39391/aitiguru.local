@@ -7,14 +7,41 @@ import { PositionsList } from "@/features/positions-list";
 import { PositionsPagination } from "@/features/positions-pagination";
 import { ResetPositionsBtn } from "@/features/reset-positions-btn";
 import { Wrapper } from "@/entities/wrapper";
-import { usePositionStore } from "@/entities/position";
+import { useModalStore } from "@/shared/store";
+import { usePositionStore, type TPositionState } from "@/entities/position";
 
 const PositionsWrapper: FC = () => {
-  const { fetchPositions, isLoading } = usePositionStore();
+  const { isOpen, open } = useModalStore();
+  const {
+    current: position,
+    fetchPositions,
+    isLoading,
+    setCurrPosition
+  } = usePositionStore();
+
+  const openCreatePositionForm = (position: TPositionState["current"]) => {
+    if(!position) return;
+
+    open({ content: <CreatePositionForm /> });
+  }
+
+  const resetPositionData = (isOpen: boolean) => {
+    if(isOpen) return;
+
+    setCurrPosition(null);
+  }
 
   useEffect(() => {
     fetchPositions();
   }, []);
+
+  useEffect(() => {
+    openCreatePositionForm(position);
+  }, [position]);
+
+  useEffect(() => {
+    resetPositionData(isOpen);
+  }, [isOpen]);
 
   return (
     <Wrapper

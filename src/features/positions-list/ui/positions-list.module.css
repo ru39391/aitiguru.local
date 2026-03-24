@@ -112,3 +112,9 @@
 .positions__caption_type_rating .positions__sortdir {
   display: block;
 }
+
+.positions__actions {
+  gap: 0 12px;
+  display: flex;
+  justify-content: space-around;
+}

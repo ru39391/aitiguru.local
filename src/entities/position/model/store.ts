@@ -5,6 +5,7 @@ import type { TPositionState, TPositionStore } from "./types";
 
 const initialState: TPositionState = {
   data: [],
+  current: null,
   pagination: null,
   isLoading: false,
 };
@@ -53,13 +54,49 @@ export const usePositionStore = create<TPositionStore>()(
 
         return isSucceed;
       },
-      /*
+      // TODO: настроить updatePosition
       updatePosition: async (payload) => {
+        console.log('updatePosition: ', payload);
+        return true;
       },
+      removePosition: async (id) => {
+        let isSucceed = false;
 
-      removePosition: async (payload) => {
+        set({ isLoading: true });
+
+        try {
+          const {
+            data,
+            pagination,
+            success
+          } = await positionApi.removeItem({ id, arr: get().data, pagination: get().pagination });
+
+          isSucceed = success;
+          set({
+            data,
+            pagination,
+            isLoading: false,
+          });
+        } finally {
+          set({ isLoading: false });
+        }
+
+        return isSucceed;
+      },
+      setCurrPosition: async (id = null) => {
+        if(!id) {
+          set({ current: null });
+          return;
+        }
+
+        if(id === get().current?.id) {
+          set({ current: null });
+        }
+
+        const current = [...get().data].find(item => Number(item.id) === Number(id));
+
+        set({ current: current || null });
       }
-      */
     }),
     { name: "PositionStore" },
   ),

@@ -8,18 +8,25 @@ import type { TFormHandler, TFormState, TPositionData } from "@/shared/types";
 export const useCreatePosition = (): TFormHandler<Partial<TPositionData>> => {
   const { close: closeModal } = useModalStore();
   const { add: addNotification } = useNotificationStore();
-  const { createPosition } = usePositionStore();
+  const {
+    current: position,
+    createPosition,
+    setCurrPosition,
+    updatePosition
+  } = usePositionStore();
 
   const submitForm = () => async (
     _: unknown,
     formData: FormData
   ): Promise<TFormState<Partial<TPositionData>>> => {
     const { price, ...values } = Object.fromEntries(formData) as Partial<TPositionData>;
+    const payload = { ...values, price: parseFloat(price) };
 
-    const success = await createPosition({ ...values, price: parseFloat(price) });
+    const success = position ? await updatePosition(payload) : await createPosition(payload);
 
     if (success) {
       closeModal();
+      setCurrPosition();
       addNotification({ title: ADD_POSITION_SUCCEED, type: "success" });
     }
 
