@@ -11,14 +11,11 @@ const ProtectedRoute: FC<IProtectedRoute> = ({ children }) => {
   const { init, isAuth, isLoading } = useAuthStore();
   const location = useLocation();
 
-  return children;
-  /*
   useEffect(() => {
     init();
   }, [init]);
 
   return !isLoading && isAuth ? children : <Navigate to={routes.public.login} state={{ from: location }} replace />;
-  */
 };
 
 export default ProtectedRoute;

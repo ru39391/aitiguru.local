@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { positionApi } from "../lib/position-api";
-import type { TPaginationPayload, TPositionState, TPositionStore } from "./types";
+import type { TPositionState, TPositionStore } from "./types";
 
 const initialState: TPositionState = {
   data: [],

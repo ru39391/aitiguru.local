@@ -15,9 +15,6 @@ export class StorageHandler {
     localStorage.setItem(key, JSON.stringify(payload));
   }
 
-// TODO: настроить поиск
-// TODO: настроить прогресс бар
-// TODO: настроить ya cloud
   static async handleData<T>(payload: T, key: string): Promise<{ success: boolean; data: T | null; }> {
     if (this.isDataExist(key)) {
       this.removeData(key);
