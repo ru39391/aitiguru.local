@@ -1,4 +1,5 @@
 .notification {
+  z-index: 1060;
   position: fixed;
   top: 16px;
   right: 16px;

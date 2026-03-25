@@ -22,7 +22,8 @@ export const useValidateForm = (): TValidateForm => {
   const validateNumberField = (event: Event) => {
     const { name, value } = event.target as HTMLInputElement;
     const numValue = parseFloat(value);
-    const isValueValid = value.length > 0 && numValue > 0 && !isNaN(numValue);
+    const validCharsRegex = /^[0-9.,]*$/;
+    const isValueValid = value.length > 0 && validCharsRegex.test(value) && numValue > 0 && !isNaN(numValue);
 
     setInputErrors({
       ...inputErrors,

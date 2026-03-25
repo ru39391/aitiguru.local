@@ -1,4 +1,5 @@
 .modal {
+  z-index: 1040;
   display: flex;
   flex-direction: column;
   justify-content: center;

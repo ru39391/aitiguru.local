@@ -54,7 +54,7 @@ const PositionsWrapper: FC = () => {
       footer={(<><PositionsCounter /><PositionsPagination /></>)}
       title="Все позиции"
     >
-      <Loader isVisible={isLoading}><PositionsList /></Loader>
+      <Loader hasCircle={false} isVisible={isLoading}><PositionsList /></Loader>
     </Wrapper>
   )
 };

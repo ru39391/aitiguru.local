@@ -7,6 +7,7 @@ import { usePositionStore } from "@/entities/position";
 import { useValidateForm } from "@/shared/hooks";
 import { useCreatePosition } from "../hooks/use-create-position";
 import type { ITextFieldInput } from "@/shared/ui/text-field";
+import styles from "./create-position-form.module.css";
 
 const CreatePositionForm: FC = () => {
   const { formState, dispatchForm, isPending } = useCreatePosition();
@@ -84,13 +85,15 @@ const CreatePositionForm: FC = () => {
           <CloseIcon />
         </TextField>
       ))}
-      <Button
-        caption={!isPending ? "Сохранить" : ""}
-        isDisabled={isPending || isBtnDisabled}
-        type="submit"
-      >
-        <Loader isVisible={isPending} size="xs" />
-      </Button>
+      <div className={styles.row}>
+        <Button
+          caption={!isPending ? "Сохранить" : ""}
+          isDisabled={isPending || isBtnDisabled}
+          type="submit"
+        >
+          <Loader isVisible={isPending} size="xs" />
+        </Button>
+      </div>
     </Form>
   )
 };

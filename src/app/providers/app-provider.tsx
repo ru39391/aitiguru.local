@@ -6,8 +6,8 @@ const AppProvider = () => {
   return (
     <>
       <RouterProvider />
-      <Notification />
       <Modal />
+      <Notification />
     </>
   );
 };

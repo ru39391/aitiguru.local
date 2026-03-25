@@ -1,4 +1,5 @@
 .btn {
+  min-width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,6 +20,7 @@
 .btn_type_row {
   font-size: var(--font-size-sm);
   letter-spacing: 0;
+  min-width: unset;
   gap: 0 15px;
   padding: 10px 20px;
   flex-direction: row;
@@ -31,6 +33,7 @@
 
 .btn_type_icon {
   border: 0;
+  min-width: unset;
   padding: 2px 14px;
   border-radius: 24px;
   box-shadow: none;
@@ -41,6 +44,7 @@
 .btn_type_plain {
   font-size: var(--font-size-sm);
   letter-spacing: 0;
+  min-width: unset;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid var(--color-border);
@@ -50,6 +54,7 @@
 }
 
 .btn_type_unstyled {
+  min-width: unset;
   padding: 0;
   border: 0;
   box-shadow: none;

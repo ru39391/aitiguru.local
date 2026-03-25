@@ -2,6 +2,7 @@ import { useState, type FC } from "react";
 import { Button } from "@/shared/ui";
 import { Card } from "@/shared/ui";
 import { EditIcon, TrashBinIcon } from "@/shared/icons";
+import { Loader } from "@/shared/ui";
 import { PositionItem } from "@/entities/position-item";
 import { sortPositions } from "../lib/sort-positions";
 import { useHandlePositions } from "../hooks/use-handle-positions";
@@ -10,9 +11,13 @@ import { usePositionStore, type TQueryData } from "@/entities/position";
 import { type TPositionData } from "@/shared/types";
 import styles from './positions-list.module.css';
 
-const RemovePositionModal: FC<{ id: TPositionData["id"]; name: TPositionData["name"]; }> = ({ id, name }) => {
+const RemovePositionModal: FC<{
+  id: TPositionData["id"];
+  name: TPositionData["name"];
+}> = ({ id, name }) => {
   const { close } = useModalStore();
   const { handleRemoveItem } = useHandlePositions();
+  const { isLoading } = usePositionStore();
 
   return (
     <Card
@@ -23,8 +28,20 @@ const RemovePositionModal: FC<{ id: TPositionData["id"]; name: TPositionData["na
       }}
     >
       <div className={styles.positions__actions}>
-        <Button handleClick={() => handleRemoveItem(id)} style="row">Да</Button>
-        <Button handleClick={() => close()} style="plain">Нет</Button>
+        <Button
+          handleClick={() => handleRemoveItem(id)}
+          isDisabled={isLoading}
+          style={isLoading ? "plain" : "row"}
+        >
+          {isLoading ? <Loader isVisible={isLoading} size="xs" /> : "Да"}
+        </Button>
+        <Button
+          handleClick={() => close()}
+          isDisabled={isLoading}
+          style="plain"
+        >
+          Нет
+        </Button>
       </div>
     </Card>
   )

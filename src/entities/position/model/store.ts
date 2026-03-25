@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { positionApi } from "../lib/position-api";
-import type { TPositionState, TPositionStore } from "./types";
+import type { TPaginationPayload, TPositionState, TPositionStore } from "./types";
 
 const initialState: TPositionState = {
   data: [],
@@ -54,10 +54,24 @@ export const usePositionStore = create<TPositionStore>()(
 
         return isSucceed;
       },
-      // TODO: настроить updatePosition
       updatePosition: async (payload) => {
-        console.log('updatePosition: ', payload);
-        return true;
+        let isSucceed = false;
+
+        set({ isLoading: true });
+
+        try {
+          const { data, success } = await positionApi.updateItem({ item: payload, arr: get().data });
+
+          isSucceed = success;
+          set({
+            data,
+            isLoading: false,
+          });
+        } finally {
+          set({ isLoading: false });
+        }
+
+        return isSucceed;
       },
       removePosition: async (id) => {
         let isSucceed = false;

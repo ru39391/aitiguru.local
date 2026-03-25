@@ -38,6 +38,15 @@ export const positionApi: TPositionApi = {
       success
     };
   },
+  updateItem: async ({ item, arr }) => {
+    const { data } = await apiHandler.update<Partial<TPositionData>, TPositionData>(`${routes.api.positions}/${item.id}`, item);
+    const { success, ...position } = data as TPositionData & { success: boolean };
+
+    return {
+      data: success ? [...arr].map(data => data.id === position.id ? position : data) : arr,
+      success
+    };
+  },
   removeItem: async ({ id, arr, pagination }) => {
     const { success } = await apiHandler.remove<null, { success: boolean; }>(`${routes.api.positions}/${id}`);
 
