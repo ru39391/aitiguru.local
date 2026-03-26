@@ -1,11 +1,16 @@
-import type { TResponseData, TUserData } from "@/shared/types";
+import type { TResponseData } from "@/shared/api";
+import type { TUserData } from "@/shared/types";
 
-export type TSignUpPayload = Record<"password", string> & Pick<"email" | "fullname", TUserData>;
+export type TSignUpFormData = Record<"password" | "confirm_password", string> & Pick<"email" | "fullname", TUserData> & { term?: string; };
 
-export type TSignInPayload = Omit<TSignUpPayload, "fullname">;
+export type TSignUpPayload = Omit<TSignUpFormData, "term"> & { term: number };
+
+export type TSignInFormData = Pick<TSignUpFormData, "email" | "password" | "term">;
+
+export type TSignInPayload = Pick<TSignUpPayload, "email" | "password" | "term">;
 
 export type TAuthData = {
-  user: TUserData | null;
+  user: Omit<TUserData, "token"> | null;
   isAuth: boolean;
 }
 

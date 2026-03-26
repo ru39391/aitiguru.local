@@ -21,5 +21,5 @@ export const resetPositions = async (key: string) => {
     return;
   }
 
-  positionState.fetchPositions();
+  positionState.fetchPositions(null);
 }

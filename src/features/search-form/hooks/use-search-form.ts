@@ -27,7 +27,7 @@ export const useSearchForm = (): {
   };
 
   useEffect(() => {
-    if(!searchValue) fetchPositions();
+    if(!searchValue) fetchPositions(null);
   }, [searchValue]);
 
   return {

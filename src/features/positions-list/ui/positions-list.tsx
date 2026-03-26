@@ -48,7 +48,7 @@ const RemovePositionModal: FC<{
 };
 
 const PositionsList: FC = () => {
-  const [sortData, setSortData] = useState<TQueryData>(null);
+  const [sortData, setSortData] = useState<TQueryData | null>(null);
   const { open } = useModalStore();
   const { data: positions, isLoading, setCurrPosition } = usePositionStore();
 
@@ -88,7 +88,7 @@ const PositionsList: FC = () => {
           <div key={name} className={setClassName(name)}>
             <span
               className={`${styles.positions__caption} ${styles[`positions__caption_type_${name}`]}`}
-              onClick={() => sortColValues(name)}
+              onClick={() => sortColValues(name as keyof TPositionData)}
             >
               {caption}
               {sortData?.sortby === name && sortData?.sortdir === "ASC" && <span className={styles.positions__sortdir}>▲</span>}

@@ -7,7 +7,6 @@ import { Loader } from "@/shared/ui";
 import { routes } from "@/shared/constants";
 import { useValidateForm } from "@/shared/hooks";
 import { useSignUp } from "../hooks/use-signup";
-import type { ITextFieldInput } from "@/shared/ui/text-field";
 
 const SignUpFormFooter: FC = () => <>Есть аккаунт? <Link to={routes.public.login}>Войти</Link></>;
 
@@ -38,7 +37,7 @@ const SignUpForm: FC = () => {
           name: "fullname",
           label: "ФИО",
           defaultValue: formState?.values?.fullname || "",
-          handleBlur: validatePlainField as ITextFieldInput["handleBlur"],
+          handleBlur: validatePlainField,
           handleChange: unsetInvalidData,
           handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
         }, {
@@ -47,7 +46,7 @@ const SignUpForm: FC = () => {
           label: "E-mail",
           type: "email",
           defaultValue: formState?.values?.email || "",
-          handleBlur: validateEmailField as ITextFieldInput["handleBlur"],
+          handleBlur: validateEmailField,
           handleChange: unsetInvalidData,
           handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
         }, {
@@ -56,8 +55,8 @@ const SignUpForm: FC = () => {
           label: "Пароль",
           type: "password",
           defaultValue: formState?.values?.password || "",
-          handleBlur: validatePwdField as ITextFieldInput["handleBlur"],
-          handleChange: validateConfirmPwdField as ITextFieldInput["handleChange"],
+          handleBlur: validatePwdField,
+          handleChange: validateConfirmPwdField,
           handleFieldValue: (input: HTMLInputElement | null) => togglePwdField(input)
         }, {
           icon: <LockIcon />,
@@ -65,34 +64,24 @@ const SignUpForm: FC = () => {
           label: "Повторите пароль",
           type: "password",
           defaultValue: formState?.values?.confirm_password || "",
-          handleBlur: validatePwdField as ITextFieldInput["handleBlur"],
-          handleChange: validateConfirmPwdField as ITextFieldInput["handleChange"],
+          handleBlur: validatePwdField,
+          handleChange: validateConfirmPwdField,
           handleFieldValue: (input: HTMLInputElement | null) => togglePwdField(input)
         }
       ].map(({
-        defaultValue,
-        handleBlur,
-        handleChange,
-        icon,
-        label,
         name,
         type,
-        handleFieldValue
+        ...props
       }) => (
         <TextField
           key={name}
           isRequired
           {...{
-            defaultValue,
+            ...props,
             errorValue: inputErrors[name] || "",
-            handleFieldValue,
-            icon,
             isBtnVisible: type === "password" ? true : inputErrors[name] !== undefined,
             name,
-            label,
             type,
-            ...(handleBlur && { handleBlur }),
-            ...(handleChange && { handleChange }),
           }}
         >
           {type === "password" ? <EyeCloseIcon />: <CloseIcon />}

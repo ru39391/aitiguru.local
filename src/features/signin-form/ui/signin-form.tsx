@@ -7,7 +7,6 @@ import { Loader } from "@/shared/ui";
 import { routes } from "@/shared/constants";
 import { useValidateForm } from "@/shared/hooks";
 import { useSignIn } from "../hooks/use-signin";
-import type { ITextFieldInput } from "@/shared/ui/text-field";
 
 const SignInFormFooter: FC = () => <>Нет аккаунта? <Link to={routes.public.signup}>Создать</Link></>;
 
@@ -38,7 +37,7 @@ const SignInForm: FC = () => {
           label: "E-mail",
           type: "email",
           defaultValue: formState?.values?.email || "",
-          handleBlur: validateEmailField as ITextFieldInput["handleBlur"],
+          handleBlur: validateEmailField,
           handleChange: unsetInvalidData,
           handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
         }, {
@@ -47,8 +46,8 @@ const SignInForm: FC = () => {
           label: "Пароль",
           type: "password",
           defaultValue: formState?.values?.password || "",
-          handleBlur: validatePwdField as ITextFieldInput["handleBlur"],
-          handleChange: validateConfirmPwdField as ITextFieldInput["handleChange"],
+          handleBlur: validatePwdField,
+          handleChange: validateConfirmPwdField,
           handleFieldValue: (input: HTMLInputElement | null) => togglePwdField(input)
         }
       ].map(({

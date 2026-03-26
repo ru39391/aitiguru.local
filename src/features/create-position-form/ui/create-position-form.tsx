@@ -6,7 +6,6 @@ import { Loader } from "@/shared/ui";
 import { usePositionStore } from "@/entities/position";
 import { useValidateForm } from "@/shared/hooks";
 import { useCreatePosition } from "../hooks/use-create-position";
-import type { ITextFieldInput } from "@/shared/ui/text-field";
 import styles from "./create-position-form.module.css";
 
 const CreatePositionForm: FC = () => {
@@ -75,9 +74,7 @@ const CreatePositionForm: FC = () => {
             name,
             label,
             type: "text",
-            handleBlur: ["rating", "price"].includes(name)
-              ? validateNumberField as ITextFieldInput["handleBlur"]
-              : validatePlainField as ITextFieldInput["handleBlur"],
+            handleBlur: ["rating", "price"].includes(name) ? validateNumberField : validatePlainField,
             handleChange: unsetInvalidData,
             handleFieldValue: (input: HTMLInputElement | null) => resetFieldValue(input)
           }}

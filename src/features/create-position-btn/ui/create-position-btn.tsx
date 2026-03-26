@@ -9,7 +9,7 @@ const CreatePositionBtn: FC<{ children: ReactNode }> = ({ children }) => {
   const { setCurrPosition } = usePositionStore();
 
   const openPositionModal = (content: ReactNode) => {
-    setCurrPosition();
+    setCurrPosition(null);
     open({ content });
   }
 

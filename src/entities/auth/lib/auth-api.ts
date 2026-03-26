@@ -23,7 +23,7 @@ export const authApi: TAuthApi = {
     };
   },
   refreshToken: async function () {
-    const { data, success } = await apiHandler.create<null, TResponseData<TUserData>>(routes.api.refresh);
+    const { data, success } = await apiHandler.create<null, TResponseData<TUserData>>(routes.api.refresh, null);
 
     return this.handleUserData({ data, success });
   },
@@ -38,7 +38,7 @@ export const authApi: TAuthApi = {
     return this.handleUserData({ data, success });
   },
   removeToken: async (payload: TAuthData) => {
-    const { success } = await apiHandler.create<null, Pick<"success", TResponseData<null>>>(routes.api.logout);
+    const { success } = await apiHandler.create<null, Pick<"success", TResponseData<null>>>(routes.api.logout, null);
 
     if(!success) {
       return payload;

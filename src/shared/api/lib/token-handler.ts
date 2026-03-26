@@ -1,7 +1,7 @@
 class TokenHandler {
   token: string = "";
 
-  getValue() {
+  getValue(): Promise<{ token: string }> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({ token: this.token })

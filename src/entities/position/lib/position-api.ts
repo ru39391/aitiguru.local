@@ -2,12 +2,12 @@ import { apiHandler } from "@/shared/api";
 import { StorageHandler } from "@/shared/utils";
 import { routes } from "@/shared/constants";
 import { QUERY_KEY } from "@/shared/constants";
-import type { TPositionApi } from "../model/types";
-import type { TPositionData } from "@/shared/types";
+import { type TPositionApi, type TQueryData } from "../model/types";
+import type { TPositionData, TPositionPayload } from "@/shared/types";
 
 export const positionApi: TPositionApi = {
   fetchItems: async (payload = null) => {
-    const storageData = StorageHandler.getData(QUERY_KEY);
+    const storageData = StorageHandler.getData<TQueryData>(QUERY_KEY);
     const query = payload && storageData ? {...payload, ...storageData} : (payload || storageData);
     const url = `${routes.api.positions}${query
       ? Object.entries(query).reduce(
@@ -25,7 +25,7 @@ export const positionApi: TPositionApi = {
     return Array.isArray(data) ? { data, pagination } : { data: [], pagination: null };
   },
   addItem: async ({ item, arr, pagination }) => {
-    const { data } = await apiHandler.create<Partial<TPositionData>, TPositionData>(routes.api.positions, item);
+    const { data } = await apiHandler.create<Omit<TPositionPayload, "price"> & { price: number }, TPositionData>(routes.api.positions, item);
     const { success, ...position } = data as TPositionData & { success: boolean };
 
     return {
@@ -39,7 +39,7 @@ export const positionApi: TPositionApi = {
     };
   },
   updateItem: async ({ item, arr }) => {
-    const { data } = await apiHandler.update<Partial<TPositionData>, TPositionData>(`${routes.api.positions}/${item.id}`, item);
+    const { data } = await apiHandler.update<TPositionData, TPositionData>(`${routes.api.positions}/${item.id}`, item);
     const { success, ...position } = data as TPositionData & { success: boolean };
 
     return {

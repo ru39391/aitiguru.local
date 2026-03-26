@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export interface ILoader {
-  children: ReactNode;
+  children?: ReactNode;
   hasCircle?: boolean;
   isCircleHidden?: boolean;
   isVisible: boolean;

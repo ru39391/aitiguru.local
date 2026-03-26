@@ -2,7 +2,9 @@ export type TInputErrors = Partial<Record<string, string>>;
 
 export type TPwdData = Partial<Record<string, string>>;
 
+
 export type TValidateForm = Record<"validateEmailField" |
+  "validateNumberField" |
   "validatePlainField" |
   "validatePwdField" |
   "validateConfirmPwdField" |

@@ -32,7 +32,7 @@ const PositionsWrapper: FC = () => {
   }
 
   useEffect(() => {
-    fetchPositions();
+    fetchPositions(null);
   }, []);
 
   useEffect(() => {
