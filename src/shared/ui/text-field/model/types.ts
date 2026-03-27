@@ -7,7 +7,7 @@ export interface ITextFieldInput {
   handleFocus?: (event: FocusEvent<HTMLInputElement>) => void;
   isRequired?: boolean;
   name: string;
-  type: "text" | "email" | "password";
+  type?: "text" | "email" | "password";
 }
 
 export interface ITextField extends ITextFieldInput {

@@ -6,7 +6,7 @@ import type { TAuthApi, TAuthData, TSignInPayload, TSignUpPayload } from "../mod
 
 export const authApi: TAuthApi = {
   handleUserData: async ({ data, success }: TResponseData<TUserData>) => {
-    if(!success) {
+    if(!success || !data) {
       return {
         isAuth: success,
         user: null
@@ -23,22 +23,22 @@ export const authApi: TAuthApi = {
     };
   },
   refreshToken: async function () {
-    const { data, success } = await apiHandler.create<null, TResponseData<TUserData>>(routes.api.refresh, null);
+    const response = await apiHandler.create<null, TUserData>(routes.api.refresh, null);
 
-    return this.handleUserData({ data, success });
+    return this.handleUserData(response);
   },
   signUp: async function (payload: TSignUpPayload) {
-    const { data, success } = await apiHandler.create<TSignUpPayload, TResponseData<TUserData>>(routes.api.signup, payload);
+    const response = await apiHandler.create<TSignUpPayload, TUserData>(routes.api.signup, payload);
 
-    return this.handleUserData({ data, success });
+    return this.handleUserData(response);
   },
   signIn: async function (payload: TSignInPayload) {
-    const { data, success } = await apiHandler.create<TSignInPayload, TResponseData<TUserData>>(routes.api.login, payload);
+    const response = await apiHandler.create<TSignInPayload, TUserData>(routes.api.login, payload);
 
-    return this.handleUserData({ data, success });
+    return this.handleUserData(response);
   },
   removeToken: async (payload: TAuthData) => {
-    const { success } = await apiHandler.create<null, Pick<"success", TResponseData<null>>>(routes.api.logout, null);
+    const { success } = await apiHandler.create<null, { success: boolean }>(routes.api.logout, null);
 
     if(!success) {
       return payload;

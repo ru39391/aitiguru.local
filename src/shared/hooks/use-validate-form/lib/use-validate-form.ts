@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FocusEvent, type ChangeEvent } from "react";
 import {
   FORM_ERRORS,
   PWD_VALUE_LENGTH,
@@ -10,8 +10,8 @@ export const useValidateForm = (): TValidateForm => {
   const [inputErrors, setInputErrors] = useState<TInputErrors>({});
   const [pwdData, setPwdData] = useState<TPwdData>({});
 
-  const unsetInvalidData = (event: Event) => {
-    const { name } = event.target as HTMLInputElement;
+  const unsetInvalidData = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target;
 
     setInputErrors({
       ...inputErrors,
@@ -19,8 +19,8 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
-  const validateNumberField = (event: Event) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const validateNumberField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
     const numValue = parseFloat(value);
     const validCharsRegex = /^[0-9.,]*$/;
     const isValueValid = value.length > 0 && validCharsRegex.test(value) && numValue > 0 && !isNaN(numValue);
@@ -31,8 +31,8 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
-  const validatePlainField = (event: Event) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const validatePlainField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
 
     setInputErrors({
       ...inputErrors,
@@ -40,8 +40,8 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
-  const validateEmailField = (event: Event) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const validateEmailField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValidValue = emailRegex.test(value);
 
@@ -51,8 +51,8 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
-  const validatePwdField = (event: Event) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const validatePwdField = (event: FocusEvent<HTMLInputElement, Element> | ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
     const key = name === "password" ? "confirm_password" : "password";
     const isPwdExist = pwdData[name] && pwdData[name].length >= PWD_VALUE_LENGTH;
     const isConfPwdExist = pwdData[key] && pwdData[key].length >= PWD_VALUE_LENGTH;
@@ -68,8 +68,8 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
-  const validateConfirmPwdField = (event: Event) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const validateConfirmPwdField = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
     setPwdData({
     ...pwdData,

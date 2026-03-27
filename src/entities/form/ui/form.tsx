@@ -22,7 +22,7 @@ const Form: FC<IForm> = ({
         {...{
           title,
           subtitle,
-          header: isLogoVisible && <Logo className={styles.form__logo} />,
+          header: isLogoVisible && <Logo />,
           type: mod
         }}
       >

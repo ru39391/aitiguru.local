@@ -1,1 +1,1 @@
-export type TUserData = Record<"id", number> & Record<"email" | "fullname" | "token", string>;
+export type TUserData = Record<"email" | "fullname" | "token", string> & { id: number; };

@@ -1,9 +1,8 @@
 import { type FC } from "react";
 import { Link } from "react-router";
 import { Form } from "@/entities/form";
-import { Button, Checkbox, TextField } from "@/shared/ui";
+import { Button, Checkbox, Loader, TextField, type ITextField } from "@/shared/ui";
 import { CloseIcon, EnvelopeIcon, EyeCloseIcon, LockIcon, UserIcon } from "@/shared/icons";
-import { Loader } from "@/shared/ui";
 import { routes } from "@/shared/constants";
 import { useValidateForm } from "@/shared/hooks";
 import { useSignUp } from "../hooks/use-signup";
@@ -81,7 +80,7 @@ const SignUpForm: FC = () => {
             errorValue: inputErrors[name] || "",
             isBtnVisible: type === "password" ? true : inputErrors[name] !== undefined,
             name,
-            type,
+            ...(type && { type: type as Required<ITextField>["type"] }),
           }}
         >
           {type === "password" ? <EyeCloseIcon />: <CloseIcon />}

@@ -12,7 +12,7 @@ const Notification: FC = () => {
 
   return notifications.map(({ id, type, title, desc }: TNotification, index: number) => {
     const classNameMod = `notification__wrapper_type_${type}`
-    const icons: Record<typeof type, JSX.Element> = {
+    const icons: Record<Required<TNotification>["type"], JSX.Element> = {
       error: <CloseIcon />,
       success: <CheckedIcon />,
       warning: <>!</>
@@ -26,7 +26,7 @@ const Notification: FC = () => {
       >
         <div className={type ? `${styles.notification__wrapper} ${styles[classNameMod]}` : styles.notification__wrapper}>
           <div className={styles.notification__aside}>
-            <div className={styles.notification__icon}>{icons[type] || "i"}</div>
+            <div className={styles.notification__icon}>{type ? icons[type] : "i"}</div>
           </div>
           <div className={styles.notification__content}>
             <div className={styles.notification__title}>{title}</div>

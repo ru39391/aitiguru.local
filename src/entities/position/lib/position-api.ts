@@ -2,8 +2,8 @@ import { apiHandler } from "@/shared/api";
 import { StorageHandler } from "@/shared/utils";
 import { routes } from "@/shared/constants";
 import { QUERY_KEY } from "@/shared/constants";
-import { type TPositionApi, type TQueryData } from "../model/types";
-import type { TPositionData, TPositionPayload } from "@/shared/types";
+import type { TPositionApi, TQueryData } from "../model/types";
+import type { TPaginationData, TPositionData, TPositionPayload } from "@/shared/types";
 
 export const positionApi: TPositionApi = {
   fetchItems: async (payload = null) => {
@@ -20,7 +20,7 @@ export const positionApi: TPositionApi = {
       )
       : ""
     }`;
-    const { data: { data, ...pagination } } = await apiHandler.fetch<TPositionData[]>(url);
+    const { data: { data, ...pagination } } = await apiHandler.fetch<TPaginationData & { data: TPositionData[]; }>(url);
 
     return Array.isArray(data) ? { data, pagination } : { data: [], pagination: null };
   },
@@ -30,11 +30,13 @@ export const positionApi: TPositionApi = {
 
     return {
       data: success ? [position, ...arr] : arr,
-      pagination: {
-        ...pagination,
-        perPage: success ? pagination.perPage + 1 : pagination.perPage,
-        totalCount: success ? pagination.totalCount + 1 : pagination.totalCount
-      },
+      pagination: pagination
+        ? {
+          ...pagination,
+          perPage: success ? pagination.perPage + 1 : pagination.perPage,
+          totalCount: success ? pagination.totalCount + 1 : pagination.totalCount
+        }
+        : pagination,
       success
     };
   },
@@ -52,11 +54,13 @@ export const positionApi: TPositionApi = {
 
     return {
       data: success ? [...arr].filter(item => Number(item.id) !== Number(id)) : arr,
-      pagination: {
-        ...pagination,
-        perPage: success ? pagination.perPage - 1 : pagination.perPage,
-        totalCount: success ? pagination.totalCount - 1 : pagination.totalCount
-      },
+      pagination: pagination
+      ? {
+          ...pagination,
+          perPage: success ? pagination.perPage - 1 : pagination.perPage,
+          totalCount: success ? pagination.totalCount - 1 : pagination.totalCount
+        }
+      : pagination,
       success
     };
   },

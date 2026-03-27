@@ -1,8 +1,7 @@
 import { type FC } from "react";
 import { Form } from "@/entities/form";
-import { Button, TextField } from "@/shared/ui";
+import { Button, TextField, Loader } from "@/shared/ui";
 import { CloseIcon } from "@/shared/icons";
-import { Loader } from "@/shared/ui";
 import { usePositionStore } from "@/entities/position";
 import { useValidateForm } from "@/shared/hooks";
 import { useCreatePosition } from "../hooks/use-create-position";
@@ -52,12 +51,12 @@ const CreatePositionForm: FC = () => {
         {
           name: "rating",
           label: "Оценка",
-          defaultValue: formState?.values?.rating || position?.rating || "",
+          defaultValue: formState?.values?.rating || String(position?.rating) || "",
         },
         {
           name: "price",
           label: "Цена, руб.",
-          defaultValue: formState?.values?.price || position?.price || "",
+          defaultValue: formState?.values?.price || String(position?.price) || "",
         },
       ].map(({
         defaultValue,

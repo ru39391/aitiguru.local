@@ -1,6 +1,6 @@
 import type { TPaginationData, TPositionData, TPositionPayload } from "@/shared/types";
 
-export type TPaginationPayload = Pick<"page" | "perPage", TPaginationData> | null;
+export type TPositionQuery = Partial<Pick<TPaginationData, "page" | "perPage">> & { search?: string; } | null;
 
 export type TPositionState = {
   data: TPositionData[];
@@ -10,7 +10,7 @@ export type TPositionState = {
 }
 
 export type TPositionStore = TPositionState & {
-  fetchPositions: (data: TPaginationPayload) => Promise<void>;
+  fetchPositions: (data: TPositionQuery) => Promise<void>;
   createPosition: (data: Omit<TPositionPayload, "price"> & { price: number }) => Promise<boolean>;
   updatePosition: (data: TPositionData) => Promise<boolean>;
   removePosition: (id: TPositionData["id"]) => Promise<boolean>;
@@ -18,13 +18,24 @@ export type TPositionStore = TPositionState & {
 }
 
 export type TPositionApi = {
-  fetchItems: (data: TPaginationPayload) => Promise<Omit<TPositionState, "isLoading" | "current">>;
-  addItem: ({ item, arr, pagination }: { item: Omit<TPositionPayload, "price"> & { price: number }; arr: TPositionData[]; pagination: TPaginationData; }) => Promise<Omit<TPositionState, "isLoading" | "current"> & { success: boolean }>;
-  updateItem: ({ item, arr }: { item: TPositionData; arr: TPositionData[]; }) => Promise<Pick<TPositionState, "data"> & { success: boolean }>;
-  removeItem: ({ id, arr, pagination }: { id: TPositionData["id"]; arr: TPositionData[]; pagination: TPaginationData; }) => Promise<Omit<TPositionState, "isLoading" | "current"> & { success: boolean }>;
+  fetchItems: (data: TPositionQuery) => Promise<Omit<TPositionState, "isLoading" | "current">>;
+  addItem: ({ item, arr, pagination }: {
+    item: Omit<TPositionPayload, "price"> & { price: number };
+    arr: TPositionData[];
+    pagination: TPositionState["pagination"];
+  }) => Promise<Omit<TPositionState, "isLoading" | "current"> & { success: boolean }>;
+  updateItem: ({ item, arr }: {
+    item: TPositionData;
+    arr: TPositionData[];
+  }) => Promise<Pick<TPositionState, "data"> & { success: boolean }>;
+  removeItem: ({ id, arr, pagination }: {
+    id: TPositionData["id"];
+    arr: TPositionData[];
+    pagination: TPositionState["pagination"];
+  }) => Promise<Omit<TPositionState, "isLoading" | "current"> & { success: boolean }>;
 }
 
 export type TQueryData = {
-  sortby: Pick<"id" | "price" | "rating", TPositionData>;
+  sortby: keyof Pick<TPositionData, "id" | "price" | "rating">;
   sortdir: "ASC" | "DESC";
 }
