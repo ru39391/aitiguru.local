@@ -13,7 +13,7 @@ const handleApiClient = async <P, R>(
     data: RESPONSE_DATA.data as R,
   };
 
-  const config: RequestInit = requestInterceptor({
+  const config: RequestInit = await requestInterceptor({
     method: params.method || "POST",
     ...(payload && { body: JSON.stringify(payload) }),
   });

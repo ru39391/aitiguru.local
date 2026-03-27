@@ -4,7 +4,6 @@ import { tokenHandler } from "./token-handler";
 const fetchResponseError = <T>({ res, data }: Record<"res" | "data", TResponseData<T>>) => {
   const message = data?.message as string || res.message;
 
-  //console.log('debug: ', data?.debug);
   return {
     ...res,
     data: [message] as T,
@@ -12,8 +11,8 @@ const fetchResponseError = <T>({ res, data }: Record<"res" | "data", TResponseDa
   };
 }
 
-export const requestInterceptor = (config: RequestInit): RequestInit => {
-  const token = tokenHandler.getValue();
+export const requestInterceptor = async (config: RequestInit): Promise<RequestInit> => {
+  const { token } = await tokenHandler.getValue();
 
   return {
     ...config,
