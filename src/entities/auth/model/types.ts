@@ -19,7 +19,7 @@ export type TAuthState = TAuthData & {
 }
 
 export type TAuthStore = TAuthState & {
-  init: () => Promise<void>;
+  init: () => Promise<boolean>;
   register: (data: TSignUpPayload) => Promise<boolean>;
   login: (data: TSignInPayload) => Promise<boolean>;
   logout: () => Promise<void>;

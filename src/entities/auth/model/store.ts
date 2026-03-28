@@ -33,6 +33,8 @@ export const useAuthStore = create<TAuthStore>()(
         } finally {
           set({ isLoading: false });
         }
+
+        return get().isAuth;
       },
 
       register: async (payload: TSignUpPayload) => {
