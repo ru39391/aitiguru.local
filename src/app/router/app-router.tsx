@@ -7,7 +7,7 @@ import {
   SignUp,
 } from "@/pages";
 
-import { ProtectedRoute } from "@/entities/auth";
+import { ProtectedRoute, PublicRoute } from "@/entities/auth";
 import { routes } from "@/shared/constants";
 
 const AppRouter: FC = () => {
@@ -20,19 +20,15 @@ const AppRouter: FC = () => {
       {[
         {
           path: routes.public.login,
-          element: <SignIn />,
+          element: <PublicRoute><SignIn /></PublicRoute>,
         },
         {
           path: routes.public.signup,
-          element: <SignUp />,
+          element: <PublicRoute><SignUp /></PublicRoute>,
         },
         {
           path: routes.protected.home,
-          element: (
-            <ProtectedRoute>
-              <Positions />
-            </ProtectedRoute>
-          ),
+          element: <ProtectedRoute><Positions /></ProtectedRoute>,
         },
         {
           path: "*",

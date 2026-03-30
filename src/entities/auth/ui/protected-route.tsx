@@ -5,7 +5,7 @@ import { routes } from "@/shared/constants";
 import { useAuthStore } from "../model/store";
 import { useLinearProgress } from "@/shared/hooks";
 
-const ProtectedRoute: FC<{ children: ReactNode; }> = ({ children }) => {
+const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const [isInit, setInit] = useState<boolean>(false);
   const { init, isAuth, isLoading } = useAuthStore();
   const { isPending, progress, startProgress, completeProgress } = useLinearProgress({ isLoading });
@@ -13,11 +13,16 @@ const ProtectedRoute: FC<{ children: ReactNode; }> = ({ children }) => {
 
   useEffect(() => {
     const initialize = async () => {
+      if (isInit) return;
+
       startProgress();
 
-      await init();
-      completeProgress();
-      setInit(true);
+      try {
+        await init();
+      } finally {
+        completeProgress();
+        setInit(true);
+      }
     };
 
     initialize();
@@ -28,7 +33,6 @@ const ProtectedRoute: FC<{ children: ReactNode; }> = ({ children }) => {
   }
 
   return !isLoading && isAuth ? children : <Navigate to={routes.public.login} state={{ from: location }} replace />;
-  // return !isLoading && isAuth ? <Navigate to={routes.public.home} state={{ from: location }} replace /> : children;
-}
+};
 
 export default ProtectedRoute;
