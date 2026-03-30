@@ -51,12 +51,12 @@ const CreatePositionForm: FC = () => {
         {
           name: "rating",
           label: "Оценка",
-          defaultValue: formState?.values?.rating || String(position?.rating) || "",
+          defaultValue: formState?.values?.rating || String(position?.rating || ""),
         },
         {
           name: "price",
           label: "Цена, руб.",
-          defaultValue: formState?.values?.price || String(position?.price) || "",
+          defaultValue: formState?.values?.price || String(position?.price || ""),
         },
       ].map(({
         defaultValue,
