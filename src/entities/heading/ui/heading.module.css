@@ -13,7 +13,7 @@
     align-items: center;
     grid-template-columns: repeat(4,1fr);
     grid-template-areas:
-      "caption aside aside .";
+      "caption wrapper wrapper aside";
     padding-left: 30px;
     padding-right: 30px;
   }
@@ -34,6 +34,13 @@
   }
 }
 
+.header__wrapper {
+  grid-area: wrapper;
+}
+
 .header__aside {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   grid-area: aside;
 }

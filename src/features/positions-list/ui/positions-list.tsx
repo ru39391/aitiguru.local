@@ -1,8 +1,6 @@
 import { useState, type FC } from "react";
-import { Button } from "@/shared/ui";
-import { Card } from "@/shared/ui";
+import { Button, Card, Loader } from "@/shared/ui";
 import { EditIcon, TrashBinIcon } from "@/shared/icons";
-import { Loader } from "@/shared/ui";
 import { PositionItem } from "@/entities/position-item";
 import { sortPositions } from "../lib/sort-positions";
 import { useHandlePositions } from "../hooks/use-handle-positions";

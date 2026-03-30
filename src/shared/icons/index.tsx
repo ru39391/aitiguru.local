@@ -10,6 +10,7 @@ export { default as EyeIcon } from "./ui/eye-icon";
 export { default as EyeCloseIcon } from "./ui/eye-close-icon";
 export { default as LockIcon } from "./ui/lock-icon";
 export { default as LogoIcon } from "./ui/logo-icon";
+export { default as LogoutIcon } from "./ui/logout-icon";
 export { default as PlusIcon } from "./ui/plus-icon";
 export { default as ResetIcon } from "./ui/reset-icon";
 export { default as SearchIcon } from "./ui/search-icon";
