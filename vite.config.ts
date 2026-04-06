@@ -4,6 +4,15 @@ import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'template/[name].[hash].js',
+        chunkFileNames: 'template/[name].[hash].js',
+        assetFileNames: 'template/[name].[hash].[ext]'
+      }
+    },
+  },
   server: {
     watch: {
       usePolling: true,
