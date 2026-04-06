@@ -53,10 +53,14 @@ export const useValidateForm = (): TValidateForm => {
 
   const validatePwdField = (event: FocusEvent<HTMLInputElement, Element> | ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    let errorMsg = "";
     const key = name === "password" ? "confirm_password" : "password";
     const isPwdExist = pwdData[name] && pwdData[name].length >= PWD_VALUE_LENGTH;
     const isConfPwdExist = pwdData[key] && pwdData[key].length >= PWD_VALUE_LENGTH;
-    const errorMsg = isPwdExist && isConfPwdExist && pwdData[name] !== pwdData[key] ? FORM_ERRORS.pwd : "";
+
+    if(isPwdExist || isConfPwdExist) {
+      errorMsg = pwdData[name] !== pwdData[key] ? FORM_ERRORS.pwd : "";
+    }
 
     setInputErrors({
       ...inputErrors,
