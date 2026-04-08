@@ -17,8 +17,7 @@ const SignInForm: FC = () => {
     resetFieldValue,
     togglePwdField,
     validateEmailField,
-    validatePwdField,
-    validateConfirmPwdField,
+    validatePlainPwdField,
     unsetInvalidData
   } = useValidateForm();
 
@@ -45,8 +44,8 @@ const SignInForm: FC = () => {
           label: "Пароль",
           type: "password",
           defaultValue: formState?.values?.password || "",
-          handleBlur: validatePwdField,
-          handleChange: validateConfirmPwdField,
+          handleBlur: validatePlainPwdField,
+          handleChange: unsetInvalidData,
           handleFieldValue: (input: HTMLInputElement | null) => togglePwdField(input)
         }
       ].map(({

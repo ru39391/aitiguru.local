@@ -1,5 +1,5 @@
 
-import { useEffect, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { Button, Card, Loader } from "@/shared/ui";
 import { LogoutIcon } from "@/shared/icons";
 import { useAuthStore } from "@/entities/auth";
@@ -7,8 +7,19 @@ import { useModalStore } from "@/shared/store";
 import styles from './logout-btn.module.css';
 
 const LogoutConfirmModal: FC = () => {
+  const [isLoading, setLoading] = useState<boolean>(false);
   const { close } = useModalStore();
-  const { isAuth, isLoading, logout } = useAuthStore();
+  const { isAuth, logout } = useAuthStore();
+
+  const signOut = async () => {
+    setLoading(true);
+
+    try {
+      await logout();
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     if(!isAuth) close();
@@ -24,7 +35,7 @@ const LogoutConfirmModal: FC = () => {
     >
       <div className={styles.actions}>
         <Button
-          handleClick={() => logout()}
+          handleClick={() => signOut()}
           isDisabled={isLoading}
           style={isLoading ? "plain" : "row"}
         >

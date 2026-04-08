@@ -28,15 +28,17 @@ const PublicRoute: FC<{ children: ReactNode }> = ({ children }) => {
     initialize();
   }, [init]);
 
-  if (isPending || !isInit) {
-    return <LinearProgress {...{ progress }} />;
-  }
-
   if (isAuth) {
     return <Navigate to={routes.protected.home} state={{ from: location }} replace />;
   }
 
-  return <Loader isVisible={isLoading} hasCircle={!isLoading}>{children}</Loader>;
+  return (
+    <>
+      {(isPending || !isInit) && <LinearProgress {...{ progress }} />}
+      <div className={isLoading && !isAuth ? "hidden" : ""}>{children}</div>
+      {/* <Loader isVisible={isLoading} hasCircle={!isLoading}>{children}</Loader> */}
+    </>
+  )
 };
 
 export default PublicRoute;

@@ -51,6 +51,15 @@ export const useValidateForm = (): TValidateForm => {
     });
   }
 
+  const validatePlainPwdField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
+
+    setInputErrors({
+      ...inputErrors,
+      ...(value.length < PWD_VALUE_LENGTH && { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} ${PWD_VALUE_LENGTH} символов` })
+    });
+  }
+
   const validatePwdField = (event: FocusEvent<HTMLInputElement, Element> | ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     let errorMsg = "";
@@ -118,6 +127,7 @@ export const useValidateForm = (): TValidateForm => {
     validatePlainField,
     validatePwdField,
     validateConfirmPwdField,
+    validatePlainPwdField,
     unsetInvalidData
   };
 };

@@ -6,7 +6,8 @@ export type TPwdData = Partial<Record<string, string>>;
 
 export type TValidateForm = Record<"validateEmailField" |
   "validateNumberField" |
-  "validatePlainField", (event: FocusEvent<HTMLInputElement, Element>) => void>
+  "validatePlainField" |
+  "validatePlainPwdField", (event: FocusEvent<HTMLInputElement, Element>) => void>
   & Record<"validateConfirmPwdField" |
   "unsetInvalidData", (event: ChangeEvent<HTMLInputElement>) => void
   > & {

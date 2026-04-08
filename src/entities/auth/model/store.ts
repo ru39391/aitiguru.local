@@ -74,8 +74,6 @@ export const useAuthStore = create<TAuthStore>()(
       },
 
       logout: async () => {
-        set({ isLoading: true });
-
         try {
           const { user, isAuth } = await authApi.removeToken({ user: get().user, isAuth: get().isAuth });
 
