@@ -1,5 +1,5 @@
 import { useEffect, useState, type FC, type ReactNode } from "react";
-import { LinearProgress, Loader } from "@/shared/ui";
+import { LinearProgress } from "@/shared/ui";
 import { Navigate, useLocation } from "react-router";
 import { routes } from "@/shared/constants";
 import { useAuthStore } from "../model/store";
