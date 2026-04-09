@@ -5,7 +5,14 @@ export const useLinearProgress = (options: TLinearProgressData) => {
   const [progress, setProgress] = useState<number>(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const startHandleProgress = () => {
+  const stopHandleProgress = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  const handleProgress = () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -14,42 +21,24 @@ export const useLinearProgress = (options: TLinearProgressData) => {
 
     intervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const progressValue = Math.min(100, Math.log10(elapsed + 1) * 35);
+      console.log(elapsed);
+      const progressValue = Math.min(100, Math.log10(elapsed + 1) * (options.isLoading ? 15 : 35));
 
       setProgress(Math.round(progressValue));
+
+      if(progressValue >= 100) stopHandleProgress();
     }, 100);
   };
 
-  const stopHandleProgress = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
+  useEffect(() => {
+    handleProgress();
+  }, [options.isLoading]);
+
+  const startProgress = () => {
+    setProgress(0);
   };
 
-  useEffect(() => {
-    if(options.isLoading) {
-      startHandleProgress();
-    } else {
-      stopHandleProgress();
-    }
-
-    return () => {
-      stopHandleProgress();
-    };
-  }, [options.isLoading]);
-
-  const startProgress = useCallback(() => {
-    stopHandleProgress();
-    setProgress(0);
-
-    if (options.isLoading) {
-      startHandleProgress();
-    }
-  }, [options.isLoading]);
-
   const completeProgress = useCallback(() => {
-    stopHandleProgress();
     setProgress(100);
 
     if (options.onComplete) options.onComplete();

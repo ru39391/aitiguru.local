@@ -8,19 +8,16 @@ import { useLinearProgress } from "@/shared/hooks";
 const ProtectedRoute: FC<{ children: ReactNode }> = ({ children }) => {
   const [isInit, setInit] = useState<boolean>(false);
   const { init, isAuth, isLoading } = useAuthStore();
-  const { isPending, progress, startProgress, completeProgress } = useLinearProgress({ isLoading });
+  const { isPending, progress } = useLinearProgress({ isLoading });
   const location = useLocation();
 
   useEffect(() => {
     const initialize = async () => {
       if (isInit) return;
 
-      startProgress();
-
       try {
         await init();
       } finally {
-        completeProgress();
         setInit(true);
       }
     };
