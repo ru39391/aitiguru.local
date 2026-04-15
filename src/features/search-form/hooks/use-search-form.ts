@@ -11,10 +11,10 @@ export const useSearchForm = (): {
   const [searchValue, setSearchValue] = useState<string>('');
   const { fetchPositions, data: positions } = usePositionStore();
 
-  const handleStorageData = (): TQueryData => {
-    const storageData = StorageHandler.getData(QUERY_KEY);
+  const handleStorageData = (): TQueryData | null => {
+    const storageData = StorageHandler.getData<TQueryData>(QUERY_KEY);
 
-    if(!storageData) return {};
+    if(!storageData) return null;
 
     const { sortby, sortdir } = storageData;
 
@@ -29,7 +29,7 @@ export const useSearchForm = (): {
 
     const queryData = handleStorageData();
 
-    if(Object.values(queryData).length > 0) {
+    if(queryData) {
       StorageHandler.handleData<TQueryData>(queryData, QUERY_KEY);
     } else {
       StorageHandler.removeData(QUERY_KEY);
@@ -42,10 +42,11 @@ export const useSearchForm = (): {
     if (!query.trim()) return;
 
     const queryData = handleStorageData();
+    const payload = { search: query };
 
-    await StorageHandler.handleData({ ...queryData, search: query }, QUERY_KEY);
+    await StorageHandler.handleData(queryData ? { ...queryData, ...payload } : payload, QUERY_KEY);
 
-    await fetchPositions({ search: query });
+    await fetchPositions(payload);
   };
 
   const debouncedSearch = useDebounce(handleSearch, 500);
