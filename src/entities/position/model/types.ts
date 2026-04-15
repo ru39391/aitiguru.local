@@ -38,4 +38,5 @@ export type TPositionApi = {
 export type TQueryData = {
   sortby: keyof Pick<TPositionData, "id" | "price" | "rating">;
   sortdir: "ASC" | "DESC";
+  search?: string;
 }

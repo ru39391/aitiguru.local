@@ -1,6 +1,6 @@
 export class StorageHandler {
   static isDataExist(key: string) {
-    return localStorage.getItem(key) !== null;;
+    return localStorage.getItem(key) !== null;
   }
 
   static getData<T>(key: string): (T | null) {

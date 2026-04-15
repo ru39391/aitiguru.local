@@ -21,7 +21,6 @@ export const useLinearProgress = (options: TLinearProgressData) => {
 
     intervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      console.log(elapsed);
       const progressValue = Math.min(100, Math.log10(elapsed + 1) * (options.isLoading ? 15 : 35));
 
       setProgress(Math.round(progressValue));
