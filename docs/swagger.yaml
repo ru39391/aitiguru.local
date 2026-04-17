@@ -1,0 +1,856 @@
+swagger: "2.0"
+basePath: /
+host: localhost:3000
+info:
+  title: Authentication & Positions API
+  description: API для аутентификации пользователей и управления товарными позициями
+  version: "1.0"
+  contact: {}
+
+schemes:
+  - http
+
+securityDefinitions:
+  BearerAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+    description: JWT токен (формат: Bearer <token>)
+
+definitions:
+  # Request DTOs
+  request.AuthRegisterRequest:
+    description: Запрос на регистрацию нового пользователя
+    type: object
+    required:
+      - fullname
+      - email
+      - password
+      - confirm_password
+      - term
+    properties:
+      fullname:
+        description: Полное имя пользователя
+        type: string
+        example: "John Doe"
+      email:
+        description: Email пользователя
+        type: string
+        format: email
+        example: "user@mymail.com"
+      password:
+        description: Пароль (минимум 8 символов)
+        type: string
+        minLength: 8
+        example: "123456789"
+      confirm_password:
+        description: Подтверждение пароля
+        type: string
+        example: "123456789"
+      term:
+        description: |-
+          Срок жизни refresh token (дней)
+          0 - не сохранять данные входа (сессия закончится при закрытии)
+          7 - сохранить данные входа на неделю
+        type: integer
+        enum: [0, 7]
+        example: 0
+
+  request.AuthLoginRequest:
+    description: Запрос на вход в систему
+    type: object
+    required:
+      - email
+      - password
+      - term
+    properties:
+      email:
+        description: Email пользователя
+        type: string
+        format: email
+        example: "user@mymail.com"
+      password:
+        description: Пароль пользователя
+        type: string
+        example: "123456789"
+      term:
+        description: |-
+          Срок жизни refresh token (дней)
+          0 - не сохранять данные входа (сессия закончится при закрытии)
+          7 - сохранить данные входа на неделю
+        type: integer
+        enum: [0, 7]
+        example: 0
+
+  request.PositionCreateRequest:
+    description: Запрос на создание новой позиции
+    type: object
+    required:
+      - name
+      - category
+      - vendor
+      - article
+      - rating
+      - price
+    properties:
+      name:
+        description: Название товара
+        type: string
+        example: "iPhone 17 Pro"
+      category:
+        description: Категория товара
+        type: string
+        example: "Смартфоны"
+      vendor:
+        description: Производитель
+        type: string
+        example: "Apple"
+      article:
+        description: Артикул
+        type: string
+        example: "QWERTY"
+      rating:
+        description: Рейтинг (от 0 до 5)
+        type: number
+        format: float
+        minimum: 0
+        maximum: 5
+        example: 5
+      price:
+        description: Цена в рублях
+        type: integer
+        minimum: 0
+        example: 145000
+
+  request.PositionUpdateRequest:
+    description: Запрос на обновление позиции
+    type: object
+    properties:
+      id:
+        description: ID позиции
+        type: integer
+        example: 60
+      img:
+        description: URL изображения
+        type: string
+        example: ""
+      name:
+        description: Название товара
+        type: string
+        example: "iPhone 17 Pro Max"
+      category:
+        description: Категория товара
+        type: string
+        example: "Смартфоны"
+      vendor:
+        description: Производитель
+        type: string
+        example: "Apple"
+      article:
+        description: Артикул
+        type: string
+        example: "Q321TY"
+      rating:
+        description: Рейтинг (от 0 до 5)
+        type: number
+        format: float
+        example: 4.5
+      price:
+        description: Цена в рублях
+        type: integer
+        example: 145999
+      createdAt:
+        description: Дата создания
+        type: string
+        format: date-time
+        example: "2026-04-17T18:13:00Z"
+      updatedAt:
+        description: Дата обновления
+        type: string
+        format: date-time
+        example: null
+
+  # Response DTOs
+  response.AuthDebugInfo:
+    description: Отладочная информация
+    type: object
+    properties:
+      exp:
+        description: Время жизни токена
+        type: integer
+        example: 0
+      isTokenExist:
+        description: Существует ли токен
+        type: boolean
+        example: true
+      refreshToken:
+        description: Refresh токен
+        type: string
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  response.AuthRegisterData:
+    description: Данные успешной регистрации
+    type: object
+    properties:
+      id:
+        description: ID пользователя
+        type: integer
+        example: 48
+      email:
+        description: Email пользователя
+        type: string
+        example: "user2@mymail.com"
+      fullname:
+        description: Полное имя пользователя
+        type: string
+        example: "John Doe"
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      token:
+        description: JWT access токен
+        type: string
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      debug:
+        $ref: '#/definitions/response.AuthDebugInfo'
+
+  response.AuthLoginData:
+    description: Данные успешного входа
+    type: object
+    properties:
+      id:
+        description: ID пользователя
+        type: integer
+        example: 47
+      email:
+        description: Email пользователя
+        type: string
+        example: "user@mymail.com"
+      fullname:
+        description: Полное имя пользователя
+        type: string
+        example: "John Doe"
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      token:
+        description: JWT access токен
+        type: string
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      debug:
+        $ref: '#/definitions/response.AuthDebugInfo'
+
+  response.AuthRefreshData:
+    description: Данные обновления токена
+    type: object
+    properties:
+      id:
+        description: ID пользователя
+        type: integer
+        example: 47
+      email:
+        description: Email пользователя
+        type: string
+        example: "user@mymail.com"
+      fullname:
+        description: Полное имя пользователя
+        type: string
+        example: "John Doe"
+      type:
+        description: Тип токена
+        type: string
+        example: "refresh"
+      exp:
+        description: Время жизни
+        type: integer
+        example: 0
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      token:
+        description: Новый JWT access токен
+        type: string
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  response.AuthLogoutData:
+    description: Данные успешного выхода
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      message:
+        description: Сообщение
+        type: string
+        example: "Logout successful"
+
+  response.AuthErrorDebug:
+    description: Отладочная информация об ошибке
+    type: object
+    properties:
+      message:
+        description: Детальное сообщение об ошибке
+        type: string
+        example: "Authorization header missing or invalid"
+
+  response.AuthErrorData:
+    description: Данные ошибки
+    type: object
+    properties:
+      success:
+        description: Статус успеха (всегда false)
+        type: boolean
+        example: false
+      message:
+        description: Сообщение об ошибке
+        type: string
+        example: "Ошибка аутентификации"
+      debug:
+        $ref: '#/definitions/response.AuthErrorDebug'
+
+  response.AuthErrorResponse:
+    description: Стандартный ответ об ошибке аутентификации
+    type: object
+    properties:
+      success:
+        description: Статус успеха (всегда false)
+        type: boolean
+        example: false
+      data:
+        $ref: '#/definitions/response.AuthErrorData'
+
+  # Position DTOs
+  response.PositionData:
+    description: Данные товарной позиции
+    type: object
+    properties:
+      id:
+        description: ID позиции
+        type: integer
+        example: 60
+      img:
+        description: URL изображения
+        type: string
+        example: "assets/images/positions/962ec3bdd7023bee5ef3210ace60abb98029f1259e81876a499277cd6a015d00.jpg"
+      name:
+        description: Название товара
+        type: string
+        example: "Samsung Galaxy Tab A9+ 5G 128 ГБ серый"
+      category:
+        description: Категория товара
+        type: string
+        example: "Планшет"
+      vendor:
+        description: Производитель
+        type: string
+        example: "Samsung"
+      article:
+        description: Артикул
+        type: string
+        example: "GJ85R2K"
+      rating:
+        description: Рейтинг (от 0 до 5)
+        type: number
+        format: float
+        example: 2.7
+      price:
+        description: Цена в рублях
+        type: integer
+        example: 22199
+      createdAt:
+        description: Дата создания
+        type: string
+        format: date-time
+        example: "2026-03-12T18:54:00Z"
+      updatedAt:
+        description: Дата обновления
+        type: string
+        format: date-time
+        example: null
+      success:
+        description: Статус успеха (опционально)
+        type: boolean
+        example: true
+
+  response.PositionsPaginationData:
+    description: Данные пагинации списка позиций
+    type: object
+    properties:
+      page:
+        description: Текущая страница
+        type: integer
+        example: 1
+      perPage:
+        description: Количество элементов на странице
+        type: integer
+        example: 6
+      totalCount:
+        description: Общее количество элементов
+        type: integer
+        example: 3
+      totalPages:
+        description: Общее количество страниц
+        type: integer
+        example: 1
+      data:
+        description: Массив позиций
+        type: array
+        items:
+          $ref: '#/definitions/response.PositionData'
+      sortby:
+        description: Поле для сортировки
+        type: string
+        enum: ["price", "rating"]
+        example: "price"
+      sortdir:
+        description: Направление сортировки
+        type: string
+        enum: ["ASC", "DESC"]
+        example: "ASC"
+      search:
+        description: Поисковый запрос
+        type: string
+        example: "5g"
+
+  response.PositionsListResponse:
+    description: Успешный ответ со списком позиций
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.PositionsPaginationData'
+
+  response.PositionSingleResponse:
+    description: Успешный ответ с одной позицией
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.PositionData'
+
+  response.PositionDeleteData:
+    description: Данные успешного удаления позиции
+    type: object
+    properties:
+      id:
+        description: ID удаленной позиции
+        type: integer
+        example: 60
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      rating:
+        description: Рейтинг (сброшен)
+        type: integer
+        example: 0
+
+  response.PositionDeleteResponse:
+    description: Успешный ответ при удалении позиции
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.PositionDeleteData'
+
+  response.AuthRegisterSuccessResponse:
+    description: Успешный ответ при регистрации
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.AuthRegisterData'
+
+  response.AuthLoginSuccessResponse:
+    description: Успешный ответ при входе
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.AuthLoginData'
+
+  response.AuthRefreshSuccessResponse:
+    description: Успешный ответ при обновлении токена
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.AuthRefreshData'
+
+  response.AuthLogoutSuccessResponse:
+    description: Успешный ответ при выходе
+    type: object
+    properties:
+      success:
+        description: Статус успеха
+        type: boolean
+        example: true
+      data:
+        $ref: '#/definitions/response.AuthLogoutData'
+
+  # Error response
+  response.GenericErrorResponse:
+    description: Стандартный ответ об ошибке
+    type: object
+    properties:
+      success:
+        description: Статус успеха (всегда false)
+        type: boolean
+        example: false
+      data:
+        $ref: '#/definitions/response.AuthErrorData'
+
+paths:
+  # Authentication endpoints
+  /api/auth/register:
+    post:
+      summary: Регистрация нового пользователя
+      description: Создание нового аккаунта в системе
+      tags:
+        - Аутентификация
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          description: Данные для регистрации
+          required: true
+          schema:
+            $ref: '#/definitions/request.AuthRegisterRequest'
+      responses:
+        "200":
+          description: Успешная регистрация
+          schema:
+            $ref: '#/definitions/response.AuthRegisterSuccessResponse'
+        "400":
+          description: Ошибка валидации или пользователь уже существует
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+
+  /api/auth/login:
+    post:
+      summary: Вход в систему
+      description: Авторизация пользователя по email и паролю
+      tags:
+        - Аутентификация
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          description: Данные для входа
+          required: true
+          schema:
+            $ref: '#/definitions/request.AuthLoginRequest'
+      responses:
+        "200":
+          description: Успешный вход
+          schema:
+            $ref: '#/definitions/response.AuthLoginSuccessResponse'
+        "400":
+          description: Неверные учетные данные
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+
+  /api/auth/logout:
+    post:
+      summary: Выход из системы
+      description: Завершение сессии пользователя (требует аутентификации)
+      tags:
+        - Аутентификация
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Успешный выход
+          schema:
+            $ref: '#/definitions/response.AuthLogoutSuccessResponse'
+        "401":
+          description: Не авторизован
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+
+  /api/auth/refresh:
+    post:
+      summary: Обновление токена
+      description: Получение нового access токена по refresh токену (требует аутентификации)
+      tags:
+        - Аутентификация
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Успешное обновление токена
+          schema:
+            $ref: '#/definitions/response.AuthRefreshSuccessResponse'
+        "401":
+          description: Не авторизован или токен истек
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.AuthErrorResponse'
+
+  # Positions endpoints
+  /api/positions:
+    get:
+      summary: Получение списка позиций
+      description: Возвращает список товарных позиций с поддержкой пагинации, поиска и сортировки (требует аутентификации)
+      tags:
+        - Товарные позиции
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          description: Номер страницы
+          type: integer
+          default: 1
+          minimum: 1
+        - in: query
+          name: perPage
+          description: Количество элементов на странице
+          type: integer
+          default: 6
+          minimum: 1
+        - in: query
+          name: search
+          description: Поисковый запрос (по названию)
+          type: string
+          example: "5g"
+        - in: query
+          name: sortby
+          description: Поле для сортировки
+          type: string
+          enum: ["price", "rating"]
+          default: "price"
+          example: "price"
+        - in: query
+          name: sortdir
+          description: Направление сортировки
+          type: string
+          enum: ["ASC", "DESC"]
+          default: "ASC"
+          example: "ASC"
+      responses:
+        "200":
+          description: Список позиций с пагинацией
+          schema:
+            $ref: '#/definitions/response.PositionsListResponse'
+        "401":
+          description: Ошибка аутентификации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+
+    post:
+      summary: Создание новой позиции
+      description: Добавляет новую товарную позицию в каталог (требует аутентификации)
+      tags:
+        - Товарные позиции
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: body
+          name: request
+          description: Данные для создания позиции
+          required: true
+          schema:
+            $ref: '#/definitions/request.PositionCreateRequest'
+      responses:
+        "200":
+          description: Позиция успешно создана
+          schema:
+            $ref: '#/definitions/response.PositionSingleResponse'
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "401":
+          description: Ошибка аутентификации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+
+  /api/positions/{id}:
+    get:
+      summary: Получение позиции по ID
+      description: Возвращает детальную информацию о товарной позиции (требует аутентификации)
+      tags:
+        - Товарные позиции
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          description: ID позиции
+          required: true
+          type: integer
+          minimum: 1
+          example: 60
+      responses:
+        "200":
+          description: Данные позиции
+          schema:
+            $ref: '#/definitions/response.PositionSingleResponse'
+        "401":
+          description: Ошибка аутентификации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "404":
+          description: Позиция не найдена
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+
+    put:
+      summary: Обновление позиции
+      description: Обновляет существующую товарную позицию (требует аутентификации)
+      tags:
+        - Товарные позиции
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          description: ID позиции
+          required: true
+          type: integer
+          minimum: 1
+          example: 60
+        - in: body
+          name: request
+          description: Данные для обновления позиции
+          required: true
+          schema:
+            $ref: '#/definitions/request.PositionUpdateRequest'
+      responses:
+        "200":
+          description: Позиция успешно обновлена
+          schema:
+            $ref: '#/definitions/response.PositionSingleResponse'
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "401":
+          description: Ошибка аутентификации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "404":
+          description: Позиция не найдена
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+
+    delete:
+      summary: Удаление позиции
+      description: Удаляет товарную позицию из каталога (требует аутентификации)
+      tags:
+        - Товарные позиции
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          description: ID позиции
+          required: true
+          type: integer
+          minimum: 1
+          example: 60
+      responses:
+        "200":
+          description: Позиция успешно удалена
+          schema:
+            $ref: '#/definitions/response.PositionDeleteResponse'
+        "401":
+          description: Ошибка аутентификации
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "404":
+          description: Позиция не найдена
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/response.GenericErrorResponse'
