@@ -1,0 +1,15 @@
+.runner {
+  min-height: 4px;
+  background-color: var(--color-white);
+}
+
+.runner__bg {
+  text-align: right;
+  padding: 2px 4px;
+  border-radius: 0 4px 4px 0;
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-md);
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  transition: all .5s ease;
+}

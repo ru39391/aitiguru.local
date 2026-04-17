@@ -1,0 +1,133 @@
+import { useState, type FocusEvent, type ChangeEvent } from "react";
+import {
+  FORM_ERRORS,
+  PWD_VALUE_LENGTH,
+  TEXT_VALUE_LENGTH
+} from "@/shared/constants";
+import type { TInputErrors, TPwdData, TValidateForm } from "./model/types";
+
+export const useValidateForm = (): TValidateForm => {
+  const [inputErrors, setInputErrors] = useState<TInputErrors>({});
+  const [pwdData, setPwdData] = useState<TPwdData>({});
+
+  const unsetInvalidData = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target;
+
+    setInputErrors({
+      ...inputErrors,
+      [name]: ""
+    });
+  }
+
+  const validateNumberField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
+    const numValue = parseFloat(value);
+    const validCharsRegex = /^[0-9.,]*$/;
+    const isValueValid = value.length > 0 && validCharsRegex.test(value) && numValue > 0 && !isNaN(numValue);
+
+    setInputErrors({
+      ...inputErrors,
+      ...(!isValueValid && { [name]: value.length === 0 ? FORM_ERRORS.required : FORM_ERRORS.num })
+    });
+  }
+
+  const validatePlainField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
+
+    setInputErrors({
+      ...inputErrors,
+      ...(value.length < TEXT_VALUE_LENGTH && { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} ${TEXT_VALUE_LENGTH} символов` })
+    });
+  }
+
+  const validateEmailField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidValue = emailRegex.test(value);
+
+    setInputErrors({
+      ...inputErrors,
+      ...(!isValidValue && { [name]: value.length === 0 ? FORM_ERRORS.required : FORM_ERRORS.email })
+    });
+  }
+
+  const validatePlainPwdField = (event: FocusEvent<HTMLInputElement, Element>) => {
+    const { name, value } = event.target;
+
+    setInputErrors({
+      ...inputErrors,
+      ...(value.length < PWD_VALUE_LENGTH && { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} ${PWD_VALUE_LENGTH} символов` })
+    });
+  }
+
+  const validatePwdField = (event: FocusEvent<HTMLInputElement, Element> | ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    let errorMsg = "";
+    const key = name === "password" ? "confirm_password" : "password";
+    const isPwdExist = pwdData[name] && pwdData[name].length >= PWD_VALUE_LENGTH;
+    const isConfPwdExist = pwdData[key] && pwdData[key].length >= PWD_VALUE_LENGTH;
+
+    if(isPwdExist || isConfPwdExist) {
+      errorMsg = pwdData[name] !== pwdData[key] ? FORM_ERRORS.pwd : "";
+    }
+
+    setInputErrors({
+      ...inputErrors,
+      ...(
+        value.length < PWD_VALUE_LENGTH
+          ? { [name]: value.length === 0 ? FORM_ERRORS.required : `${FORM_ERRORS.min} ${PWD_VALUE_LENGTH} символов` }
+          : { [name]: errorMsg, [key]: errorMsg }
+      )
+    });
+  }
+
+  const validateConfirmPwdField = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setPwdData({
+    ...pwdData,
+      [name]: value
+    });
+
+    validatePwdField(event);
+  }
+
+  const handleBtnDisabled = (): boolean => Object.values(inputErrors).reduce((acc, value) => acc || Boolean(value), false);
+
+  const resetFieldValue = (input: HTMLInputElement | null) => {
+    if(!input) {
+      return;
+    }
+
+    input.value = "";
+    setInputErrors(
+      Object.entries(inputErrors).reduce(
+        (acc, [key, value]) => (key === input.name ? acc : { ...acc, [key]: value }),
+        {}
+      )
+    );
+  }
+
+  const togglePwdField = (input: HTMLInputElement | null) => {
+    if(!input) {
+      return;
+    }
+
+    input.type = input.type === "text" ? "password" : "text";
+  }
+
+  return {
+    inputErrors,
+    isBtnDisabled: handleBtnDisabled(),
+    pwdData,
+    resetFieldValue,
+    togglePwdField,
+    validateEmailField,
+    validateNumberField,
+    validatePlainField,
+    validatePwdField,
+    validateConfirmPwdField,
+    validatePlainPwdField,
+    unsetInvalidData
+  };
+};

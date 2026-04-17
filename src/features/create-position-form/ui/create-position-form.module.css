@@ -1,0 +1,5 @@
+.row {
+  grid-column: 1/3;
+  display: flex;
+  justify-content: center;
+}

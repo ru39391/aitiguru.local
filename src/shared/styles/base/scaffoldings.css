@@ -1,0 +1,16 @@
+body {
+  font-family: var(--font-family-body), sans-serif;
+  font-size: var(--font-size-body);
+  font-weight: var(--fw-normal);
+  color: var(--color-basic);
+  background-color: var(--color-neutral);
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.hidden {
+  display: none;
+}

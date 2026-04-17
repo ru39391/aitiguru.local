@@ -1,0 +1,107 @@
+.notification {
+  z-index: 1060;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 100%;
+  max-width: 320px;
+  min-height: 80px;
+  padding: 0 0 0 16px;
+  animation: show .5s;
+  transition: all .3s ease;
+}
+
+.notification__wrapper {
+  gap: 0 24px;
+  display: flex;
+  border-radius: 16px;
+  border-left: 8px solid var(--color-primary);
+  background-color: var(--color-white);
+  box-shadow: 0 24px 32px rgba(0, 0, 0, 0.04);
+}
+
+.notification__wrapper_type_error {
+  border-color: var(--color-danger);
+}
+
+.notification__wrapper_type_error .notification__icon {
+  background-color: var(--color-danger);
+}
+
+.notification__wrapper_type_success {
+  border-color: var(--color-success);
+}
+
+.notification__wrapper_type_success .notification__icon {
+  background-color: var(--color-success);
+}
+
+.notification__wrapper_type_warning {
+  border-color: var(--color-warning);
+}
+
+.notification__wrapper_type_warning .notification__icon {
+  background-color: var(--color-warning);
+}
+
+.notification__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0 16px 16px;
+}
+
+.notification__icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 6px;
+  border-radius: 50%;
+  font-weight: var(--fw-black);
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
+
+.notification__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px 0;
+  padding: 16px 24px 16px 0;
+}
+
+.notification__title {
+  color: var(--color-dark);
+  font-size: var(--font-size-sm);
+  font-weight: var(--fw-medium);
+  line-height: var(--line-height-md);
+}
+
+.notification__desc {
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-lg);
+}
+
+.notification__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  color: var(--color-grey-dark);
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}

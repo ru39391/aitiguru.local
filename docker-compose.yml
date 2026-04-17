@@ -1,0 +1,21 @@
+services:
+  app:
+    image: aitiguru-react-app
+    build:
+      context: .
+      dockerfile: ./conf/Dockerfile
+    container_name: aitiguru
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "3000:80"
+    depends_on: []
+    networks:
+      - aitiguru_network
+
+networks:
+  aitiguru_network:
+    driver: bridge

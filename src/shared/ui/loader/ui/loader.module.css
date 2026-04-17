@@ -1,0 +1,70 @@
+.loader {
+  position: relative;
+  height: 100%;
+}
+
+.loader > * {
+  opacity: .45;
+  transition: opacity .3s ease;
+}
+
+.loader__wrapper {
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader__wrapper_pos_stat {
+  position: static;
+}
+
+.loader__icon {
+  width: 64px;
+  height: 64px;
+  animation: spin 1.5s linear infinite;
+}
+
+.loader__icon_xs {
+  width: 24px;
+  height: 24px;
+}
+
+.loader__icon_sm {
+  width: 32px;
+  height: 32px;
+}
+
+.loader__icon_md {
+  width: 48px;
+  height: 48px;
+}
+
+.loader__bg {
+  color: var(--color-grey);
+  opacity: 0.3;
+}
+
+.loader__circle {
+  color: var(--color-primary);
+  transform-origin: center;
+  animation: spin 2s ease-in-out infinite;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 60;
+}
+
+.loader__content {
+  margin-top: 16px;
+}
+
+@keyframes spin {
+  to{
+    transform:rotate(1turn)
+  }
+}

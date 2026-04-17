@@ -1,0 +1,27 @@
+.modal {
+  z-index: 1040;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 22px 16px;
+  background-color: rgba(0, 0, 0, .55);
+}
+
+.modal__wrapper {
+  width: 100%;
+  max-width: 660px;
+}
+
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px;
+  color: var(--color-white);
+}

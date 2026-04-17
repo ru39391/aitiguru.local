@@ -1,0 +1,120 @@
+.positions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (--md-min-value) {
+  .positions {
+    display: block;
+  }
+}
+
+.positions__row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px 0;
+  border-bottom: 1px solid #E2E2E2;
+}
+
+.positions__row_type_caption {
+  display: none;
+}
+
+@media (--md-min-value) {
+  .positions__row {
+    display: grid;
+    gap: 8px;
+    align-items: center;
+    grid-template-columns: repeat(8,1fr);
+    grid-template-areas:
+      "name name vendor article rating price btns btns";
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .positions__row_type_caption {
+    display: grid;
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+}
+
+@media (--md-min-value) {
+  .positions__col {
+    text-align: center;
+  }
+}
+
+.positions__col_type_name {
+  text-align: left;
+  grid-area: name;
+}
+
+.positions__row_type_caption .positions__col_type_name {
+  text-align: left;
+}
+
+.positions__col_type_vendor {
+  grid-area: vendor;
+  font-weight: var(--fw-black);
+}
+
+.positions__col_type_article {
+  grid-area: article;
+}
+
+.positions__col_type_rating {
+  grid-area: rating;
+}
+
+.positions__col_type_price {
+  grid-area: price;
+}
+
+.positions__col_type_btns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0 32px;
+  grid-area: btns;
+}
+
+@media (--md-min-value) {
+  .positions__col_type_btns {
+    justify-content: center;
+  }
+}
+
+.positions__caption {
+  font-size: var(--font-size-body);
+  line-height: 1.875;
+  font-weight: var(--fw-black);
+  color: var(--color-border-dark);
+}
+
+.positions__sortdir {
+  display: none;
+}
+
+.positions__caption_type_price,
+.positions__caption_type_rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 0 8px;
+}
+
+.positions__caption_type_price .positions__sortdir,
+.positions__caption_type_rating .positions__sortdir {
+  display: block;
+}
+
+.positions__actions {
+  gap: 0 12px;
+  display: flex;
+  justify-content: space-around;
+}

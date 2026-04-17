@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# Список товарных позиций
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Предназначен для демонстрации функционала аутентификации, получения списка товаров, поиска по названию, сортировке по цене и рейтингу
 
-Currently, two official plugins are available:
+## Запуск и сборка приложения
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Используется Vite. Для установки зависимостей выполните в директории проекта:
 
-## React Compiler
+### `npm i`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Для запуска приложения в режиме разработки:
 
-## Expanding the ESLint configuration
+### `npm run dev`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Файл .env.example предварительно следует переименовать в .env, оставив содержимое без изменений. Приложение будет доступно по адресу [http://localhost:5173/](http://localhost:5173/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Рекомендуется использовать NodeJS v23.0.0
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Чтобы локально запустить приложение в production-режиме, установите [docker](https://docs.docker.com/engine/install/ubuntu/), переименуйте файл .env.example в .env, оставив без изменений (переменная VITE_APP_ENV не используется), и выполните в консоли:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### `docker compose up --build -d`
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Приложение будет доступно по адресу [http://localhost:3000/](http://localhost:3000/)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Дополнительно
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Приложение также доступно по [ссылке](http://84.201.161.145);
+- Из-за проблем с доступом к [DummyJSON Auth](https://dummyjson.com/docs/auth) без VPN, было реализовано собственное API, спецификация эндпойнтов [здесь](https://github.com/ru39391/aitiguru.local/blob/main/docs/swagger.yaml);
+- CORS на удалённом сервере настроен для работы с http://localhost:5173/ и http://localhost:3000/
+- Чтобы авторизоваться, потребуется предварительная регистрация (после успешной регистрации происходит автологин);
+- Для управления доступом используется пара accessToken (для операций с товарными позициями, локализован в приложении, передаётся в заголовках, срок жизни - 15 минут) и refreshToken (для обновления accessToken, передаётся через HttpOnly cookie, срок жизни - 7 дней, если установить чекбокс в формах авторизации/регистрации, в противном случае будет недействителен после закрытия браузера);
+- Настроена сортировка товарных позиций по цене и рейтингу: предварительно сортируются позиции, хранящиеся стейт-менеджером, параметры сортировки записываются в localStorage, при обновлении страницы параметры запроса будут взяты оттуда, сервер вернёт глобально упорядоченную выборку. Сброс осуществляется по клику на кнопку обновления;
+- Для товарных позиций настроены операции создания, обновления и удаления;
+- Значение поисковой строки сбрасывается при обновлении страницы или по клику на соответствующую кнопку, выборка позиций происходит по совпадению символов в названии.
+
+## Видео
+
+- [Сборка и запуск приложения](https://disk.yandex.ru/i/7ISHHYM2lDU9Ng)
+- [Регистрация](https://disk.yandex.ru/i/xmoXAdNV8yEKrQ)
+- [Авторизация](https://disk.yandex.ru/i/wMgODmURBjwhbQ)
+- [CRUD-операции для товарных позиций](https://disk.yandex.ru/i/XlFdMKsXxvGN2g)
+- [Поиск товарных позиций](https://disk.yandex.ru/i/wjDVV-Q49QGreQ)
+- [Сортировка товаров](https://disk.yandex.ru/i/12zbyhY8-Hnv7w)

@@ -1,0 +1,46 @@
+server {
+  listen 80;
+  server_name _;
+  root /usr/share/nginx/html;
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+
+  location /api/ {
+    proxy_pass BACKEND_URL/api/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+
+  location /assets/ {
+    rewrite ^/assets/(.*)$ /assets/$1 break;
+    proxy_pass BACKEND_URL;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    access_log /var/log/nginx/assets_access.log;
+    error_log /var/log/nginx/assets_error.log;
+
+    expires 30d;
+    add_header Cache-Control "public, immutable";
+  }
+
+  location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+
+    try_files $uri @remote_assets;
+  }
+
+  location @remote_assets {
+    proxy_pass BACKEND_URL;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+  }
+}
